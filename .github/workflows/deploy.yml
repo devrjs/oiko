@@ -2,7 +2,7 @@ name: Deploy para Produção
 
 on:
   push:
-    branches: [main]
+    branches: [master]
 
 concurrency:
   group: production
@@ -22,12 +22,16 @@ jobs:
       - name: Criar .env com as variáveis de produção
         run: |
           cat > .env << 'EOF'
-          DATABASE_URL=${{ secrets.DATABASE_URL }}
-          BETTER_AUTH_URL=${{ secrets.BETTER_AUTH_URL }}
-          JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
-          NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
-          PORT=3333
-          API_URL=http://api:3333
+          DB_PORT=5432
+          DB_USER=postgres
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          DB_NAME=oiko
+          BACKEND_API_PORT=3333
+          BETTER_AUTH_SERVER_URL=${{ secrets.BETTER_AUTH_SERVER_URL }}
+          BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }}
+          BETTER_AUTH_TRUSTED_ORIGINS=${{ secrets.BETTER_AUTH_TRUSTED_ORIGINS }}
+          NEXT_PUBLIC_BACKEND_API_URL=${{ secrets.NEXT_PUBLIC_BACKEND_API_URL }}
+          INTERNAL_BACKEND_API_URL=${{ secrets.INTERNAL_BACKEND_API_URL }}
           EOF
 
       - name: Build e deploy dos containers
@@ -43,6 +47,11 @@ jobs:
           sleep 10
           curl --fail --retry 5 --retry-delay 5 http://localhost:3333/health \
             || (docker compose logs api --tail=30 && exit 1)
+
+      - name: Verificar saúde do Frontend
+        run: |
+          curl --fail --retry 5 --retry-delay 5 http://localhost:3000/ \
+            || (docker compose logs web --tail=30 && exit 1)
 
       - name: Limpar dados do build antigo
         run: |
