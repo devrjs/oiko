@@ -1,0 +1,79 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.16/schema.json",
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!node_modules",
+      "!**/components/ui",
+      "!**/src/gen",
+      "!.next",
+      "!dist",
+      "!build"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
+  "javascript": {
+    "formatter": {
+      "arrowParentheses": "asNeeded",
+      // Usar aspas simples em atributos JSX (Antes: className="container" | Depois: className='container')
+      "jsxQuoteStyle": "single",
+      // Usar aspas simples para literais de string em JS/TS (Antes: const s = "hello" | Depois: const s = 'hello')
+      "quoteStyle": "single",
+      // Evitar ponto e vírgula ao final de instruções (Antes: const a = 1; | Depois: const a = 1)
+      "semicolons": "asNeeded",
+      // Vírgula no final em estruturas multilinhas compatíveis com ES5 (Antes: [1, 2] multilinhas | Depois: [1, 2,] com vírgula final)
+      "trailingCommas": "es5"
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noUnknownAtRules": "off"
+      },
+      "correctness": {
+        "noUnusedImports": {
+          "level": "off",
+          "fix": "safe"
+        }
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "level": "warn",
+          "fix": "safe",
+          "options": {
+            "attributes": ["class", "className", "classList"],
+            "functions": ["clsx", "cn", "tw", "tw.*"]
+          }
+        }
+      }
+    },
+    "domains": {
+      "next": "recommended",
+      "react": "recommended"
+    }
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  }
+}

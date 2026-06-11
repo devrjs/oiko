@@ -1,0 +1,904 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Oiko API",
+    "description": "API de alta performance usando Bun, Elysia, Drizzle ORM e Better Auth.",
+    "version": "2.0.0"
+  },
+  "paths": {
+    "/signup": {
+      "post": {
+        "parameters": [],
+        "operationId": "postSignup",
+        "summary": "Criar uma nova conta de usuário",
+        "tags": ["Autenticação"],
+        "responses": {
+          "200": { "description": "Conta criada com sucesso" },
+          "400": { "description": "Usuário já existe" }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email", "password"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email", "password"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email", "password"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/session": {
+      "post": {
+        "parameters": [],
+        "operationId": "postSession",
+        "summary": "Fazer login e obter token de sessão",
+        "tags": ["Autenticação"],
+        "responses": {
+          "200": { "description": "Login bem-sucedido" },
+          "401": { "description": "Credenciais inválidas" }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me": {
+      "get": {
+        "operationId": "getMe",
+        "summary": "Obter perfil do usuário atual logado",
+        "tags": ["Autenticação"],
+        "responses": {
+          "200": { "description": "Perfil retornado com sucesso" },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    },
+    "/edit/user": {
+      "post": {
+        "parameters": [],
+        "operationId": "postEditUser",
+        "summary": "Editar perfil do usuário",
+        "tags": ["Autenticação"],
+        "responses": {
+          "200": { "description": "Perfil atualizado com sucesso" },
+          "401": { "description": "Não autorizado" }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email/validate": {
+      "post": {
+        "parameters": [],
+        "operationId": "postEmailValidate",
+        "summary": "Validar e-mail com token",
+        "tags": ["Autenticação"],
+        "responses": {
+          "200": { "description": "E-mail verificado com sucesso" }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["token"],
+                "properties": { "token": { "type": "string" } }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["token"],
+                "properties": { "token": { "type": "string" } }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "required": ["token"],
+                "properties": { "token": { "type": "string" } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/send/email/forgot": {
+      "post": {
+        "parameters": [],
+        "operationId": "postSendEmailForgot",
+        "summary": "Enviar e-mail de recuperação de senha",
+        "tags": ["Autenticação"],
+        "responses": {
+          "200": { "description": "E-mail de recuperação enviado" }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email"],
+                "properties": { "email": { "type": "string" } }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["email"],
+                "properties": { "email": { "type": "string" } }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "required": ["email"],
+                "properties": { "email": { "type": "string" } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/password/reset": {
+      "post": {
+        "parameters": [],
+        "operationId": "postPasswordReset",
+        "summary": "Redefinir senha com token",
+        "tags": ["Autenticação"],
+        "responses": {
+          "200": { "description": "Senha redefinida com sucesso" }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["password", "token"],
+                "properties": {
+                  "password": { "type": "string" },
+                  "token": { "type": "string" }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["password", "token"],
+                "properties": {
+                  "password": { "type": "string" },
+                  "token": { "type": "string" }
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "required": ["password", "token"],
+                "properties": {
+                  "password": { "type": "string" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/send/email/verification": {
+      "get": {
+        "operationId": "getSendEmailVerification",
+        "summary": "Enviar e-mail de verificação",
+        "tags": ["Autenticação"],
+        "responses": {
+          "200": { "description": "E-mail de verificação enviado" },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    },
+    "/category/add": {
+      "post": {
+        "parameters": [],
+        "operationId": "postCategoryAdd",
+        "summary": "Adicionar uma nova categoria",
+        "tags": ["Categoria"],
+        "responses": {
+          "200": { "description": "Categoria adicionada com sucesso" },
+          "401": { "description": "Não autorizado" }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["description"],
+                "properties": { "description": { "type": "string" } }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["description"],
+                "properties": { "description": { "type": "string" } }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "required": ["description"],
+                "properties": { "description": { "type": "string" } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/category/list": {
+      "get": {
+        "parameters": [
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "page",
+            "required": false
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "per_page",
+            "required": false
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "search_description",
+            "required": false
+          }
+        ],
+        "operationId": "getCategoryList",
+        "summary": "Listar categorias com paginação e busca",
+        "tags": ["Categoria"],
+        "responses": {
+          "200": { "description": "Lista de categorias paginada" },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    },
+    "/category/all": {
+      "get": {
+        "operationId": "getCategoryAll",
+        "summary": "Listar todas as categorias do usuário",
+        "tags": ["Categoria"],
+        "responses": {
+          "200": { "description": "Lista completa de categorias" },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    },
+    "/category/edit": {
+      "post": {
+        "parameters": [],
+        "operationId": "postCategoryEdit",
+        "summary": "Editar descrição de uma categoria",
+        "tags": ["Categoria"],
+        "responses": {
+          "200": { "description": "Categoria atualizada com sucesso" },
+          "401": { "description": "Não autorizado" }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["category_id", "description"],
+                "properties": {
+                  "category_id": { "type": "string" },
+                  "description": { "type": "string" }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["category_id", "description"],
+                "properties": {
+                  "category_id": { "type": "string" },
+                  "description": { "type": "string" }
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "required": ["category_id", "description"],
+                "properties": {
+                  "category_id": { "type": "string" },
+                  "description": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/category/delete": {
+      "post": {
+        "parameters": [],
+        "operationId": "postCategoryDelete",
+        "summary": "Excluir uma categoria e suas relações",
+        "tags": ["Categoria"],
+        "responses": {
+          "200": { "description": "Categoria excluída com sucesso" },
+          "401": { "description": "Não autorizado" }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["category_id"],
+                "properties": { "category_id": { "type": "string" } }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["category_id"],
+                "properties": { "category_id": { "type": "string" } }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "required": ["category_id"],
+                "properties": { "category_id": { "type": "string" } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/finance/add": {
+      "post": {
+        "parameters": [],
+        "operationId": "postFinanceAdd",
+        "summary": "Adicionar uma nova transação financeira",
+        "tags": ["Finanças"],
+        "responses": {
+          "200": { "description": "Transação adicionada com sucesso" },
+          "401": { "description": "Não autorizado" }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["description", "amount", "date", "type"],
+                "properties": {
+                  "description": { "type": "string" },
+                  "amount": { "type": "number" },
+                  "date": { "type": "string" },
+                  "type": { "type": "string" },
+                  "category_id": { "type": "string" }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["description", "amount", "date", "type"],
+                "properties": {
+                  "description": { "type": "string" },
+                  "amount": { "type": "number" },
+                  "date": { "type": "string" },
+                  "type": { "type": "string" },
+                  "category_id": { "type": "string" }
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "required": ["description", "amount", "date", "type"],
+                "properties": {
+                  "description": { "type": "string" },
+                  "amount": { "type": "number" },
+                  "date": { "type": "string" },
+                  "type": { "type": "string" },
+                  "category_id": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/finance/edit": {
+      "post": {
+        "parameters": [],
+        "operationId": "postFinanceEdit",
+        "summary": "Editar uma transação financeira existente",
+        "tags": ["Finanças"],
+        "responses": {
+          "200": { "description": "Transação atualizada com sucesso" },
+          "401": { "description": "Não autorizado" }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "finance_id",
+                  "description",
+                  "amount",
+                  "date",
+                  "type"
+                ],
+                "properties": {
+                  "finance_id": { "type": "string" },
+                  "description": { "type": "string" },
+                  "amount": { "type": "number" },
+                  "date": { "type": "string" },
+                  "type": { "type": "string" },
+                  "category_id": { "type": "string" }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "finance_id",
+                  "description",
+                  "amount",
+                  "date",
+                  "type"
+                ],
+                "properties": {
+                  "finance_id": { "type": "string" },
+                  "description": { "type": "string" },
+                  "amount": { "type": "number" },
+                  "date": { "type": "string" },
+                  "type": { "type": "string" },
+                  "category_id": { "type": "string" }
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "finance_id",
+                  "description",
+                  "amount",
+                  "date",
+                  "type"
+                ],
+                "properties": {
+                  "finance_id": { "type": "string" },
+                  "description": { "type": "string" },
+                  "amount": { "type": "number" },
+                  "date": { "type": "string" },
+                  "type": { "type": "string" },
+                  "category_id": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/finance/list": {
+      "get": {
+        "parameters": [
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "page",
+            "required": false
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "per_page",
+            "required": false
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "category_id",
+            "required": false
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "search_description",
+            "required": false
+          }
+        ],
+        "operationId": "getFinanceList",
+        "summary": "Listar transações financeiras (Entradas e Saídas)",
+        "tags": ["Finanças"],
+        "responses": {
+          "200": { "description": "Lista de transações paginada" },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    },
+    "/finance/list/pendencies": {
+      "get": {
+        "parameters": [
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "page",
+            "required": false
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "per_page",
+            "required": false
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "category_id",
+            "required": false
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "search_description",
+            "required": false
+          }
+        ],
+        "operationId": "getFinanceListPendencies",
+        "summary": "Listar pendências financeiras (Contas a pagar/receber)",
+        "tags": ["Finanças"],
+        "responses": {
+          "200": { "description": "Lista de pendências paginada" },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    },
+    "/finance/total": {
+      "get": {
+        "parameters": [
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "category_id",
+            "required": false
+          }
+        ],
+        "operationId": "getFinanceTotal",
+        "summary": "Obter resumos estatísticos financeiros",
+        "tags": ["Finanças"],
+        "responses": {
+          "200": { "description": "Resumo estatístico financeiro" },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    },
+    "/finance/delete": {
+      "post": {
+        "parameters": [],
+        "operationId": "postFinanceDelete",
+        "summary": "Excluir uma transação financeira",
+        "tags": ["Finanças"],
+        "responses": {
+          "200": { "description": "Transação excluída com sucesso" },
+          "401": { "description": "Não autorizado" }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["finance_id"],
+                "properties": { "finance_id": { "type": "string" } }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["finance_id"],
+                "properties": { "finance_id": { "type": "string" } }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "required": ["finance_id"],
+                "properties": { "finance_id": { "type": "string" } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/goals/add": {
+      "post": {
+        "parameters": [],
+        "operationId": "postGoalsAdd",
+        "summary": "Adicionar uma nova meta financeira",
+        "tags": ["Metas"],
+        "responses": {
+          "200": { "description": "Meta adicionada com sucesso" },
+          "401": { "description": "Não autorizado" }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["starting_amount", "target_amount", "target_date"],
+                "properties": {
+                  "starting_amount": { "type": "number" },
+                  "target_amount": { "type": "number" },
+                  "target_date": { "type": "string" },
+                  "category_id": { "type": "string" }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["starting_amount", "target_amount", "target_date"],
+                "properties": {
+                  "starting_amount": { "type": "number" },
+                  "target_amount": { "type": "number" },
+                  "target_date": { "type": "string" },
+                  "category_id": { "type": "string" }
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "required": ["starting_amount", "target_amount", "target_date"],
+                "properties": {
+                  "starting_amount": { "type": "number" },
+                  "target_amount": { "type": "number" },
+                  "target_date": { "type": "string" },
+                  "category_id": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/goals/edit": {
+      "post": {
+        "parameters": [],
+        "operationId": "postGoalsEdit",
+        "summary": "Editar uma meta financeira existente",
+        "tags": ["Metas"],
+        "responses": {
+          "200": { "description": "Meta atualizada com sucesso" },
+          "401": { "description": "Não autorizado" }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "goal_id",
+                  "starting_amount",
+                  "target_amount",
+                  "target_date"
+                ],
+                "properties": {
+                  "goal_id": { "type": "string" },
+                  "starting_amount": { "type": "number" },
+                  "target_amount": { "type": "number" },
+                  "target_date": { "type": "string" },
+                  "category_id": { "type": "string" }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "goal_id",
+                  "starting_amount",
+                  "target_amount",
+                  "target_date"
+                ],
+                "properties": {
+                  "goal_id": { "type": "string" },
+                  "starting_amount": { "type": "number" },
+                  "target_amount": { "type": "number" },
+                  "target_date": { "type": "string" },
+                  "category_id": { "type": "string" }
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "goal_id",
+                  "starting_amount",
+                  "target_amount",
+                  "target_date"
+                ],
+                "properties": {
+                  "goal_id": { "type": "string" },
+                  "starting_amount": { "type": "number" },
+                  "target_amount": { "type": "number" },
+                  "target_date": { "type": "string" },
+                  "category_id": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/goals/view": {
+      "get": {
+        "parameters": [
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "category_id",
+            "required": false
+          }
+        ],
+        "operationId": "getGoalsView",
+        "summary": "Visualizar status de uma meta financeira",
+        "tags": ["Metas"],
+        "responses": {
+          "200": { "description": "Status da meta retornado" },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    },
+    "/goals/delete": {
+      "post": {
+        "parameters": [],
+        "operationId": "postGoalsDelete",
+        "summary": "Excluir uma meta financeira",
+        "tags": ["Metas"],
+        "responses": {
+          "200": { "description": "Meta excluída com sucesso" },
+          "401": { "description": "Não autorizado" }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["goal_id"],
+                "properties": { "goal_id": { "type": "string" } }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["goal_id"],
+                "properties": { "goal_id": { "type": "string" } }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "required": ["goal_id"],
+                "properties": { "goal_id": { "type": "string" } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": { "schemas": {} }
+}

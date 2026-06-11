@@ -1,0 +1,49 @@
+name: Deploy para Produção
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Criar .env com as variáveis de produção
+        run: |
+          cat > .env << 'EOF'
+          DATABASE_URL=${{ secrets.DATABASE_URL }}
+          BETTER_AUTH_URL=${{ secrets.BETTER_AUTH_URL }}
+          JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
+          NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+          PORT=3333
+          API_URL=http://api:3333
+          EOF
+
+      - name: Build e deploy dos containers
+        run: |
+          docker compose up -d --build
+
+      - name: Rodar migrações do banco de dados (Drizzle Push)
+        run: |
+          docker compose exec -T api bun x drizzle-kit push --force --config drizzle.config.ts
+
+      - name: Verificar saúde da API
+        run: |
+          sleep 10
+          curl --fail --retry 5 --retry-delay 5 http://localhost:3333/health \
+            || (docker compose logs api --tail=30 && exit 1)
+
+      - name: Limpar dados do build antigo
+        run: |
+          docker system prune -f --filter until=24h

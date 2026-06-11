@@ -1,0 +1,36 @@
+{
+  "name": "oiko-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "bun run --env-file=.env turbo dev",
+    "build": "bun run --env-file=.env turbo build",
+    "check": "bun run --env-file=.env turbo check",
+    "lint": "bun run --env-file=.env turbo lint",
+    "format": "bun run --env-file=.env turbo format",
+    "clean": "knip --fix --allow-remove-files --no-exit-code && node -e \"const fs = require('fs'); ['apps/api/dist', 'apps/api/node_modules', 'apps/web/.next', 'apps/web/node_modules', '.turbo', 'node_modules', 'pnpm-lock.yaml', 'bun.lock'].forEach(d => fs.rmSync(d, { recursive: true, force: true }))\"",
+    "db:up": "docker compose up -d postgres",
+    "db:generate": "cd apps/api && bun run --env-file=../../.env drizzle-kit generate",
+    "db:migrate": "cd apps/api && bun run --env-file=../../.env drizzle-kit migrate",
+    "db:push": "cd apps/api && bun run --env-file=../../.env drizzle-kit push",
+    "db:studio": "cd apps/api && bun run --env-file=../../.env drizzle-kit studio",
+    "db:seed": "cd apps/api && bun run --env-file=../../.env src/db/seed.ts"
+  },
+  "devDependencies": {
+    "knip": "6.14.2",
+    "turbo": "2.9.17"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "workspaces": [
+    "apps/*"
+  ],
+  "packageManager": "bun@1.3.14",
+  "overrides": {
+    "kysely": "0.28.17"
+  },
+  "resolutions": {
+    "kysely": "0.28.17"
+  }
+}

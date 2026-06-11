@@ -1,0 +1,32 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/api": {
+      "entry": ["src/server.ts"],
+      "project": ["src/**/*.ts"]
+    },
+    "apps/web": {
+      "entry": [
+        "src/app/**/page.tsx",
+        "src/app/**/layout.tsx",
+        "kubb.config.mjs"
+      ],
+      "project": ["src/**/*.{ts,tsx}"],
+      "ignore": [
+        "src/gen/**",
+        "src/components/ui/**",
+        "src/lib/react-query-shim.ts"
+      ],
+      "ignoreDependencies": [
+        "@kubb/cli",
+        "tailwindcss",
+        "@base-ui/react",
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react",
+        "class-variance-authority",
+        "shadcn",
+        "tw-animate-css"
+      ]
+    }
+  }
+}
