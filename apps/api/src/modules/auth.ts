@@ -46,11 +46,11 @@ export const authRoutes = new Elysia()
         })
         await db
           .update(accounts)
-          .set({ password: password_hash, updated_at: new Date() })
+          .set({ password: password_hash, updatedAt: new Date() })
           .where(
             and(
-              eq(accounts.user_id, user_id),
-              eq(accounts.provider_id, 'credential')
+              eq(accounts.userId, user_id),
+              eq(accounts.providerId, 'credential')
             )
           )
       }
@@ -58,14 +58,14 @@ export const authRoutes = new Elysia()
       if (name) {
         await db
           .update(users)
-          .set({ name, updated_at: new Date() })
+          .set({ name, updatedAt: new Date() })
           .where(eq(users.id, user_id))
       }
 
       if (username) {
         await db
           .update(users)
-          .set({ username, updated_at: new Date() })
+          .set({ username, updatedAt: new Date() })
           .where(eq(users.id, user_id))
       }
 
