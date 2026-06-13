@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         shell: bash
@@ -21,7 +21,7 @@ jobs:
 
       - name: Criar .env com as variáveis de produção
         run: |
-          cat > ~/oiko.env << 'EOF'
+          cat > .env << 'EOF'
           DB_PORT=5432
           DB_USER=postgres
           DB_PASSWORD=${{ secrets.DB_PASSWORD }}
@@ -34,39 +34,21 @@ jobs:
           INTERNAL_BACKEND_API_URL=${{ secrets.INTERNAL_BACKEND_API_URL }}
           EOF
 
-      - name: Deploy via SSH
+      - name: Build e Deploy dos containers
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H 192.168.0.233 >> ~/.ssh/known_hosts
-
-          # Envia o arquivo .env gerado no runner para o diretório temporário do servidor
-          scp ~/oiko.env root@192.168.0.233:/tmp/oiko.env
-
-          ssh root@192.168.0.233 "
-            cd /opt/oiko 2>/dev/null || {
-              git clone https://github.com/devrjs/oiko.git /opt/oiko
-              cd /opt/oiko
-            }
-            cd /opt/oiko
-            git fetch origin master
-            git reset --hard origin/master
-            cp /tmp/oiko.env .env
-            docker compose up -d --build
-          "
+          docker compose up -d --build
 
       - name: Verificar saúde da API
         run: |
           sleep 10
-          ssh root@192.168.0.233 "curl --fail --retry 5 --retry-delay 5 http://localhost:3333/health" \
-            || (ssh root@192.168.0.233 "docker compose -f /opt/oiko/docker-compose.yml logs api --tail=30" && exit 1)
+          curl --fail --retry 5 --retry-delay 5 http://localhost:3333/health \
+            || (docker compose logs api --tail=30 && exit 1)
 
       - name: Verificar saúde do Frontend
         run: |
-          ssh root@192.168.0.233 "curl --fail --retry 5 --retry-delay 5 http://localhost:3000/" \
-            || (ssh root@192.168.0.233 "docker compose -f /opt/oiko/docker-compose.yml logs web --tail=30" && exit 1)
+          curl --fail --retry 5 --retry-delay 5 http://localhost:3000/ \
+            || (docker compose logs web --tail=30 && exit 1)
 
       - name: Limpar dados do build antigo
         run: |
-          ssh root@192.168.0.233 "docker system prune -f --filter until=24h"
+          docker system prune -f --filter until=24h
