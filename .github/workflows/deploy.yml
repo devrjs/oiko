@@ -41,6 +41,9 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H 192.168.0.233 >> ~/.ssh/known_hosts
 
+          # Envia o arquivo .env gerado no runner para o diretório temporário do servidor
+          scp ~/oiko.env root@192.168.0.233:/tmp/oiko.env
+
           ssh root@192.168.0.233 "
             cd /opt/oiko 2>/dev/null || {
               git clone https://github.com/devrjs/oiko.git /opt/oiko
@@ -49,16 +52,8 @@ jobs:
             cd /opt/oiko
             git fetch origin master
             git reset --hard origin/master
-            cp ~/oiko.env .env
+            cp /tmp/oiko.env .env
             docker compose up -d --build
-          "
-
-      - name: Rodar migrações (Drizzle Push)
-        run: |
-          ssh root@192.168.0.233 "
-            cd /opt/oiko
-            sleep 5
-            docker compose exec -T api bun x drizzle-kit push --force --config drizzle.config.ts
           "
 
       - name: Verificar saúde da API
