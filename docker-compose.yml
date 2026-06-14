@@ -120,12 +120,15 @@ services:
       - "traefik.enable=true"
 
       # Router
-      - "traefik.http.routers.api.rule=Host(`api.oiko.local`)"
+      - "traefik.http.routers.api.rule=Host(`api.oiko.local`) || PathPrefix(`/api-proxy`)"
       - "traefik.http.routers.api.entrypoints=web"
       - "traefik.http.routers.api.priority=10"
 
-      # Middlewares (definidos no provider file em infra/traefik/dynamic/middleware.yml)
-      - "traefik.http.routers.api.middlewares=compress@file,security-headers@file,cors-headers@file"
+      # Middleware local para remover /api-proxy antes de encaminhar para o Elysia
+      - "traefik.http.middlewares.api-strip-prefix.stripprefix.prefixes=/api-proxy"
+
+      # Middlewares (compressão e headers de segurança, sem cors-headers restritivo)
+      - "traefik.http.routers.api.middlewares=api-strip-prefix,compress@file,security-headers@file"
 
       # Service (porta interna do container)
       - "traefik.http.services.api.loadbalancer.server.port=3333"
@@ -168,7 +171,7 @@ services:
       - "traefik.enable=true"
 
       # Router
-      - "traefik.http.routers.web.rule=Host(`app.oiko.local`)"
+      - "traefik.http.routers.web.rule=Host(`app.oiko.local`) || PathPrefix(`/`)"
       - "traefik.http.routers.web.entrypoints=web"
       - "traefik.http.routers.web.priority=5"
 
