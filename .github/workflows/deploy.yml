@@ -39,6 +39,10 @@ jobs:
         run: |
           docker compose up -d --build
 
+      - name: Executar migrações do banco (db:push)
+        run: |
+          docker compose exec -T api bun run db:push
+
       - name: Verificar saúde da API
         run: |
           sleep 10
