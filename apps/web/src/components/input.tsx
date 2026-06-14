@@ -3,12 +3,13 @@ import type { FieldError } from 'react-hook-form'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: ReactElement
+  rightElement?: ReactElement
   error?: FieldError
   bg_color?: string
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ icon, error, bg_color, ...props }, ref) => {
+  ({ icon, rightElement, error, bg_color, ...props }, ref) => {
     return (
       <div
         className={`flex h-12 w-full items-center gap-2 rounded pr-2 pl-3 ${
@@ -26,6 +27,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           className={`webkit-autofill h-12 w-full bg-transparent outline-none placeholder:text-gray-400`}
           {...props}
         />
+
+        {rightElement && (
+          <div className='flex h-full items-center justify-center text-gray-400'>
+            {rightElement}
+          </div>
+        )}
       </div>
     )
   }

@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Lock, User } from 'lucide-react'
+import { Eye, EyeOff, Lock, User } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
@@ -21,6 +21,7 @@ export function SignInForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [signInErrorMessage, setSignInErrorMessage] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   // ***** validation *****
   const signInFormSchema = z.object({
@@ -85,10 +86,20 @@ export function SignInForm() {
       <span className='text-red-500'>{errors.username?.message}</span>
 
       <Input
-        type='password'
+        type={showPassword ? 'text' : 'password'}
         placeholder='Senha'
         error={errors.password}
         icon={<Lock size={22} />}
+        rightElement={
+          <button
+            type='button'
+            onClick={() => setShowPassword(!showPassword)}
+            className='flex h-full items-center justify-center focus:outline-none hover:text-gray-200 transition-colors'
+            tabIndex={-1}
+          >
+            {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
+          </button>
+        }
         {...register('password')}
       />
       <span className='text-red-500'>{errors.password?.message}</span>
