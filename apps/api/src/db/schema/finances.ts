@@ -15,7 +15,7 @@ export const categories = pgTable('categories', {
     .references(() => users.id, { onDelete: 'cascade' })
     .notNull(),
 })
-export type Category = typeof categories.$inferSelect
+type Category = typeof categories.$inferSelect
 
 export const finances = pgTable('finances', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -31,7 +31,7 @@ export const finances = pgTable('finances', {
     .references(() => users.id, { onDelete: 'cascade' })
     .notNull(),
 })
-export type Finances = typeof finances.$inferSelect
+type Finances = typeof finances.$inferSelect
 
 export const goals = pgTable('goals', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -45,4 +45,4 @@ export const goals = pgTable('goals', {
     .references(() => users.id, { onDelete: 'cascade' })
     .notNull(),
 })
-export type Goals = typeof goals.$inferSelect
+type Goals = typeof goals.$inferSelect
