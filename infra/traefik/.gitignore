@@ -1,0 +1,7 @@
+# Certificados Let's Encrypt — gerados pelo Traefik, nunca commitados
+/letsencrypt/*
+*/letsencrypt/*
+acme.json
+
+# Preserva o .gitkeep para manter a estrutura do diretório
+!.gitkeep

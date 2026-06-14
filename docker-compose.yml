@@ -1,4 +1,70 @@
+# =============================================================================
+# Docker Compose — Oiko
+# =============================================================================
+# Uso:
+#   docker compose up -d              # Sobe tudo (Traefik + apps + DB)
+#   docker compose up -d postgres     # Só o banco (dev sem Traefik)
+#
+# Traefik (reverse proxy):
+#   - Entrada única nas portas 80 e 443
+#   - api.oiko.local → api:3333
+#   - app.oiko.local → web:3000
+#   - Dashboard: http://localhost:8080 (ou http://traefik.oiko.local:8080)
+#
+# ⚠ Para desenvolvimento local, adicione ao /etc/hosts (ou C:\Windows\System32\drivers\etc\hosts):
+#   127.0.0.1 api.oiko.local app.oiko.local traefik.oiko.local
+# =============================================================================
+
+networks:
+  traefik:
+    name: traefik
+    external: false
+  oiko:
+    name: oiko
+    external: false
+
 services:
+  # ============================================================================
+  # Traefik — Reverse Proxy
+  # ============================================================================
+  traefik:
+    image: traefik:v3.6
+    container_name: oiko-traefik
+    command:
+      # Nível de log (INFO em produção, DEBUG apenas para troubleshooting)
+      - "--log.level=INFO"
+    environment:
+      # Docker 29+ requer API >= 1.44; força versão compatível
+      - DOCKER_API_VERSION=1.44
+    ports:
+      # HTTP e HTTPS
+      - "80:80"
+      - "443:443"
+      # Dashboard (acesso direto, sem roteamento)
+      - "127.0.0.1:8080:8080"
+    volumes:
+      # Acesso ao Docker para descoberta automática de serviços
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # Config estática
+      - ./infra/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      # Config dinâmica (middlewares)
+      - ./infra/traefik/dynamic:/etc/traefik/dynamic:ro
+      # Certificados Let's Encrypt (produção)
+      - ./infra/traefik/letsencrypt:/letsencrypt
+    networks:
+      - traefik
+    labels:
+      # Habilita descoberta pelo próprio Traefik
+      - "traefik.enable=true"
+      # Dashboard pelo entrypoint traefik (porta 8080, só localhost)
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.oiko.local`)"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.entrypoints=traefik"
+    restart: unless-stopped
+
+  # ============================================================================
+  # Postgres — Banco de Dados
+  # ============================================================================
   postgres:
     image: postgres:16-alpine
     container_name: oiko-db
@@ -7,24 +73,33 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - ./_data/pgdata:/var/lib/postgresql/data
+    networks:
+      - oiko
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} && psql -U $${POSTGRES_USER} -d $${POSTGRES_DB} -c 'SELECT 1'"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} && psql -U $${POSTGRES_USER} -d $${POSTGRES_DB} -c 'SELECT 1'",
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
 
+  # ============================================================================
+  # API — Elysia + Bun
+  # ============================================================================
   api:
     build:
       context: .
       dockerfile: apps/api/Dockerfile
     container_name: oiko-api
-    ports:
-      - "3333:3333"
+    # ⚠ Porta não exposta diretamente — tráfego entra pelo Traefik
+    # Caso precise testar sem Traefik: docker compose run -p 3333:3333 api
     environment:
       - DB_HOST=postgres
       - DB_PORT=${DB_PORT}
@@ -38,14 +113,38 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - traefik
+      - oiko
+    labels:
+      - "traefik.enable=true"
+
+      # Router
+      - "traefik.http.routers.api.rule=Host(`api.oiko.local`)"
+      - "traefik.http.routers.api.entrypoints=web"
+      - "traefik.http.routers.api.priority=10"
+
+      # Middlewares (definidos no provider file em infra/traefik/dynamic/middleware.yml)
+      - "traefik.http.routers.api.middlewares=compress@file,security-headers@file,cors-headers@file"
+
+      # Service (porta interna do container)
+      - "traefik.http.services.api.loadbalancer.server.port=3333"
+
+      # Healthcheck para o load balancer (Traefik verifica se o backend responde)
+      - "traefik.http.services.api.loadbalancer.healthcheck.path=/health"
+      - "traefik.http.services.api.loadbalancer.healthcheck.interval=10s"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3333/health || exit 1"]
+      test:
+        ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3333/health || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 15s
 
+  # ============================================================================
+  # Web — Next.js
+  # ============================================================================
   web:
     build:
       context: .
@@ -54,17 +153,34 @@ services:
         - NEXT_PUBLIC_BACKEND_API_URL=${NEXT_PUBLIC_BACKEND_API_URL}
         - INTERNAL_BACKEND_API_URL=${INTERNAL_BACKEND_API_URL}
     container_name: oiko-web
-    ports:
-      - "3000:3000"
+    # ⚠ Porta não exposta diretamente — tráfego entra pelo Traefik
+    # Caso precise testar sem Traefik: docker compose run -p 3000:3000 web
     environment:
       - INTERNAL_BACKEND_API_URL=${INTERNAL_BACKEND_API_URL}
       - NEXT_PUBLIC_BACKEND_API_URL=${NEXT_PUBLIC_BACKEND_API_URL}
     depends_on:
       api:
         condition: service_healthy
+    networks:
+      - traefik
+      - oiko
+    labels:
+      - "traefik.enable=true"
+
+      # Router
+      - "traefik.http.routers.web.rule=Host(`app.oiko.local`)"
+      - "traefik.http.routers.web.entrypoints=web"
+      - "traefik.http.routers.web.priority=5"
+
+      # Middlewares
+      - "traefik.http.routers.web.middlewares=compress@file,security-headers@file"
+
+      # Service (porta interna do container — 3000, definida no Dockerfile)
+      - "traefik.http.services.web.loadbalancer.server.port=3000"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1"]
+      test:
+        ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
