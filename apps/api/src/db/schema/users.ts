@@ -17,7 +17,7 @@ export const users = pgTable('users', {
     withTimezone: true,
   }).notNull(),
 })
-type User = typeof users.$inferSelect
+// type User = typeof users.$inferSelect
 
 export const sessions = pgTable('sessions', {
   id: text('id').primaryKey(),
@@ -40,7 +40,7 @@ export const sessions = pgTable('sessions', {
     withTimezone: true,
   }).notNull(),
 })
-type Session = typeof sessions.$inferSelect
+// type Session = typeof sessions.$inferSelect
 
 export const accounts = pgTable('accounts', {
   id: text('id').primaryKey(),
@@ -71,7 +71,7 @@ export const accounts = pgTable('accounts', {
     withTimezone: true,
   }).notNull(),
 })
-type Account = typeof accounts.$inferSelect
+// type Account = typeof accounts.$inferSelect
 
 export const verifications = pgTable('verifications', {
   id: text('id').primaryKey(),
@@ -90,4 +90,4 @@ export const verifications = pgTable('verifications', {
     withTimezone: true,
   }).notNull(),
 })
-type Verification = typeof verifications.$inferSelect
+// type Verification = typeof verifications.$inferSelect
