@@ -16,7 +16,7 @@ function getGetCategoryAllUrl() {
  * @summary Listar todas as categorias do usuário
  * {@link /category/all}
  */
-export async function getCategoryAll(config: Partial<RequestConfig> & { client?: Client } = {}) {
+async function getCategoryAll(config: Partial<RequestConfig> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
 

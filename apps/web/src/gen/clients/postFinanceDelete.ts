@@ -16,7 +16,7 @@ function getPostFinanceDeleteUrl() {
  * @summary Excluir uma transação financeira
  * {@link /finance/delete}
  */
-export async function postFinanceDelete(data: PostFinanceDeleteMutationRequest, config: Partial<RequestConfig<PostFinanceDeleteMutationRequest>> & { client?: Client } = {}) {
+async function postFinanceDelete(data: PostFinanceDeleteMutationRequest, config: Partial<RequestConfig<PostFinanceDeleteMutationRequest>> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
   const requestData = data

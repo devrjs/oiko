@@ -16,7 +16,7 @@ function getPostGoalsEditUrl() {
  * @summary Editar uma meta financeira existente
  * {@link /goals/edit}
  */
-export async function postGoalsEdit(data: PostGoalsEditMutationRequest, config: Partial<RequestConfig<PostGoalsEditMutationRequest>> & { client?: Client } = {}) {
+async function postGoalsEdit(data: PostGoalsEditMutationRequest, config: Partial<RequestConfig<PostGoalsEditMutationRequest>> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
   const requestData = data

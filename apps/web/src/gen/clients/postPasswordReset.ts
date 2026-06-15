@@ -16,7 +16,7 @@ function getPostPasswordResetUrl() {
  * @summary Redefinir senha com token
  * {@link /password/reset}
  */
-export async function postPasswordReset(data: PostPasswordResetMutationRequest, config: Partial<RequestConfig<PostPasswordResetMutationRequest>> & { client?: Client } = {}) {
+async function postPasswordReset(data: PostPasswordResetMutationRequest, config: Partial<RequestConfig<PostPasswordResetMutationRequest>> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
   const requestData = data

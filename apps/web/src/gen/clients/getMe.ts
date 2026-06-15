@@ -16,7 +16,7 @@ function getGetMeUrl() {
  * @summary Obter perfil do usuário atual logado
  * {@link /me}
  */
-export async function getMe(config: Partial<RequestConfig> & { client?: Client } = {}) {
+async function getMe(config: Partial<RequestConfig> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
 

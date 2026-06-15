@@ -16,7 +16,7 @@ function getPostEmailValidateUrl() {
  * @summary Validar e-mail com token
  * {@link /email/validate}
  */
-export async function postEmailValidate(data: PostEmailValidateMutationRequest, config: Partial<RequestConfig<PostEmailValidateMutationRequest>> & { client?: Client } = {}) {
+async function postEmailValidate(data: PostEmailValidateMutationRequest, config: Partial<RequestConfig<PostEmailValidateMutationRequest>> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
   const requestData = data

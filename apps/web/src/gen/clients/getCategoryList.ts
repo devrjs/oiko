@@ -16,7 +16,7 @@ function getGetCategoryListUrl() {
  * @summary Listar categorias com paginação e busca
  * {@link /category/list}
  */
-export async function getCategoryList(params?: GetCategoryListQueryParams, config: Partial<RequestConfig> & { client?: Client } = {}) {
+async function getCategoryList(params?: GetCategoryListQueryParams, config: Partial<RequestConfig> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
 

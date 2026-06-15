@@ -16,7 +16,7 @@ function getGetFinanceListPendenciesUrl() {
  * @summary Listar pendências financeiras (Contas a pagar/receber)
  * {@link /finance/list/pendencies}
  */
-export async function getFinanceListPendencies(params?: GetFinanceListPendenciesQueryParams, config: Partial<RequestConfig> & { client?: Client } = {}) {
+async function getFinanceListPendencies(params?: GetFinanceListPendenciesQueryParams, config: Partial<RequestConfig> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
 

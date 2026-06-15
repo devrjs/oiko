@@ -16,7 +16,7 @@ function getGetSendEmailVerificationUrl() {
  * @summary Enviar e-mail de verificação
  * {@link /send/email/verification}
  */
-export async function getSendEmailVerification(config: Partial<RequestConfig> & { client?: Client } = {}) {
+async function getSendEmailVerification(config: Partial<RequestConfig> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
 

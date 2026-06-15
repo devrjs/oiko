@@ -16,7 +16,7 @@ function getGetFinanceListUrl() {
  * @summary Listar transações financeiras (Entradas e Saídas)
  * {@link /finance/list}
  */
-export async function getFinanceList(params?: GetFinanceListQueryParams, config: Partial<RequestConfig> & { client?: Client } = {}) {
+async function getFinanceList(params?: GetFinanceListQueryParams, config: Partial<RequestConfig> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
 

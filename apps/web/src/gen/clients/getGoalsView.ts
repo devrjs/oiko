@@ -16,7 +16,7 @@ function getGetGoalsViewUrl() {
  * @summary Visualizar status de uma meta financeira
  * {@link /goals/view}
  */
-export async function getGoalsView(params?: GetGoalsViewQueryParams, config: Partial<RequestConfig> & { client?: Client } = {}) {
+async function getGoalsView(params?: GetGoalsViewQueryParams, config: Partial<RequestConfig> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
 

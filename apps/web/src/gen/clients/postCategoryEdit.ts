@@ -16,7 +16,7 @@ function getPostCategoryEditUrl() {
  * @summary Editar descrição de uma categoria
  * {@link /category/edit}
  */
-export async function postCategoryEdit(data: PostCategoryEditMutationRequest, config: Partial<RequestConfig<PostCategoryEditMutationRequest>> & { client?: Client } = {}) {
+async function postCategoryEdit(data: PostCategoryEditMutationRequest, config: Partial<RequestConfig<PostCategoryEditMutationRequest>> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
   const requestData = data

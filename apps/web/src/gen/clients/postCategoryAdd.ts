@@ -16,7 +16,7 @@ function getPostCategoryAddUrl() {
  * @summary Adicionar uma nova categoria
  * {@link /category/add}
  */
-export async function postCategoryAdd(data: PostCategoryAddMutationRequest, config: Partial<RequestConfig<PostCategoryAddMutationRequest>> & { client?: Client } = {}) {
+async function postCategoryAdd(data: PostCategoryAddMutationRequest, config: Partial<RequestConfig<PostCategoryAddMutationRequest>> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
   const requestData = data

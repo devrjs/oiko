@@ -16,7 +16,7 @@ function getPostSignupUrl() {
  * @summary Criar uma nova conta de usuário
  * {@link /signup}
  */
-export async function postSignup(data: PostSignupMutationRequest, config: Partial<RequestConfig<PostSignupMutationRequest>> & { client?: Client } = {}) {
+async function postSignup(data: PostSignupMutationRequest, config: Partial<RequestConfig<PostSignupMutationRequest>> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
   const requestData = data

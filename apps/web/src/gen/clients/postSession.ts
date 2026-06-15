@@ -16,7 +16,7 @@ function getPostSessionUrl() {
  * @summary Fazer login e obter token de sessão
  * {@link /session}
  */
-export async function postSession(data: PostSessionMutationRequest, config: Partial<RequestConfig<PostSessionMutationRequest>> & { client?: Client } = {}) {
+async function postSession(data: PostSessionMutationRequest, config: Partial<RequestConfig<PostSessionMutationRequest>> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
   const requestData = data

@@ -16,7 +16,7 @@ function getPostEditUserUrl() {
  * @summary Editar perfil do usuário
  * {@link /edit/user}
  */
-export async function postEditUser(data: PostEditUserMutationRequest, config: Partial<RequestConfig<PostEditUserMutationRequest>> & { client?: Client } = {}) {
+async function postEditUser(data: PostEditUserMutationRequest, config: Partial<RequestConfig<PostEditUserMutationRequest>> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
   const requestData = data

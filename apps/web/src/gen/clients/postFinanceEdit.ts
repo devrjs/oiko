@@ -16,7 +16,7 @@ function getPostFinanceEditUrl() {
  * @summary Editar uma transação financeira existente
  * {@link /finance/edit}
  */
-export async function postFinanceEdit(data: PostFinanceEditMutationRequest, config: Partial<RequestConfig<PostFinanceEditMutationRequest>> & { client?: Client } = {}) {
+async function postFinanceEdit(data: PostFinanceEditMutationRequest, config: Partial<RequestConfig<PostFinanceEditMutationRequest>> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
   const requestData = data

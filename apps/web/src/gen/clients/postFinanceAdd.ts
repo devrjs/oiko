@@ -16,7 +16,7 @@ function getPostFinanceAddUrl() {
  * @summary Adicionar uma nova transação financeira
  * {@link /finance/add}
  */
-export async function postFinanceAdd(data: PostFinanceAddMutationRequest, config: Partial<RequestConfig<PostFinanceAddMutationRequest>> & { client?: Client } = {}) {
+async function postFinanceAdd(data: PostFinanceAddMutationRequest, config: Partial<RequestConfig<PostFinanceAddMutationRequest>> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
   const requestData = data

@@ -16,7 +16,7 @@ function getPostGoalsDeleteUrl() {
  * @summary Excluir uma meta financeira
  * {@link /goals/delete}
  */
-export async function postGoalsDelete(data: PostGoalsDeleteMutationRequest, config: Partial<RequestConfig<PostGoalsDeleteMutationRequest>> & { client?: Client } = {}) {
+async function postGoalsDelete(data: PostGoalsDeleteMutationRequest, config: Partial<RequestConfig<PostGoalsDeleteMutationRequest>> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
   const requestData = data

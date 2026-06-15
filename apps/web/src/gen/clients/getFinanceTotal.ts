@@ -16,7 +16,7 @@ function getGetFinanceTotalUrl() {
  * @summary Obter resumos estatísticos financeiros
  * {@link /finance/total}
  */
-export async function getFinanceTotal(params?: GetFinanceTotalQueryParams, config: Partial<RequestConfig> & { client?: Client } = {}) {
+async function getFinanceTotal(params?: GetFinanceTotalQueryParams, config: Partial<RequestConfig> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
 

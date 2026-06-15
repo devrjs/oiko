@@ -16,7 +16,7 @@ function getPostCategoryDeleteUrl() {
  * @summary Excluir uma categoria e suas relações
  * {@link /category/delete}
  */
-export async function postCategoryDelete(data: PostCategoryDeleteMutationRequest, config: Partial<RequestConfig<PostCategoryDeleteMutationRequest>> & { client?: Client } = {}) {
+async function postCategoryDelete(data: PostCategoryDeleteMutationRequest, config: Partial<RequestConfig<PostCategoryDeleteMutationRequest>> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
   const requestData = data

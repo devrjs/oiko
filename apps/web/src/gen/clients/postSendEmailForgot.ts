@@ -16,7 +16,7 @@ function getPostSendEmailForgotUrl() {
  * @summary Enviar e-mail de recuperação de senha
  * {@link /send/email/forgot}
  */
-export async function postSendEmailForgot(data: PostSendEmailForgotMutationRequest, config: Partial<RequestConfig<PostSendEmailForgotMutationRequest>> & { client?: Client } = {}) {
+async function postSendEmailForgot(data: PostSendEmailForgotMutationRequest, config: Partial<RequestConfig<PostSendEmailForgotMutationRequest>> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
   const requestData = data

@@ -16,7 +16,7 @@ function getPostGoalsAddUrl() {
  * @summary Adicionar uma nova meta financeira
  * {@link /goals/add}
  */
-export async function postGoalsAdd(data: PostGoalsAddMutationRequest, config: Partial<RequestConfig<PostGoalsAddMutationRequest>> & { client?: Client } = {}) {
+async function postGoalsAdd(data: PostGoalsAddMutationRequest, config: Partial<RequestConfig<PostGoalsAddMutationRequest>> & { client?: Client } = {}) {
   const { client: request = fetch, ...requestConfig } = config
 
   const requestData = data
