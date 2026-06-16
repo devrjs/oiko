@@ -35,24 +35,9 @@ jobs:
           INTERNAL_BACKEND_API_URL=${{ secrets.INTERNAL_BACKEND_API_URL }}
           EOF
 
-      - name: Build e Deploy dos containers
+      - name: Executar Deploy Blue-Green
         run: |
-          docker compose up -d --build
-
-      - name: Executar migrações do banco (db:push)
-        run: |
-          docker compose exec -T api bun run db:push
-
-      - name: Verificar saúde da API
-        run: |
-          sleep 10
-          curl --fail --retry 5 --retry-delay 5 http://localhost/api-proxy/health \
-            || (docker compose logs api --tail=30 && exit 1)
-
-      - name: Verificar saúde do Frontend
-        run: |
-          curl --fail --retry 5 --retry-delay 5 http://localhost/ \
-            || (docker compose logs web --tail=30 && exit 1)
+          bash scripts/deploy-blue-green.sh
 
       - name: Limpar dados do build antigo
         run: |
