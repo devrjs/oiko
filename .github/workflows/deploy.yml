@@ -20,6 +20,11 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v4
 
+      - name: Instalar Bun no Runner
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
       - name: Criar .env com as variáveis de produção
         run: |
           cat > .env << 'EOF'
@@ -37,8 +42,7 @@ jobs:
 
       - name: Executar Deploy Blue-Green
         run: |
-          bash scripts/deploy-blue-green.sh
-          # bun run deploy
+          bun run deploy
 
       - name: Limpar dados do build antigo
         run: |
