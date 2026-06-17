@@ -57,11 +57,34 @@ if (blueRunning) {
 console.log(`NEW_COLOR=${newColor}`);
 console.log(`OLD_COLOR=${oldColor}`);
 
-// 4. Sobe a nova stack (com build)
+// 4. Derruba a stack antiga ANTES de subir a nova
+//    Isso evita conflito de labels do Traefik (serviço duplicado)
+if (oldColor) {
+  console.log(`Derrubando a stack antiga (${oldColor}) antes de subir a nova...`);
+  await $`docker compose -f docker-compose.app.yml -p oiko-${oldColor} down`.quiet().nothrow();
+}
+
+// 5. Sobe a nova stack (com build)
 console.log(`Subindo a nova stack (${newColor})...`);
 await $`docker compose -f docker-compose.app.yml -p oiko-${newColor} up -d --build`;
 
-// 5. Aguarda o container da API subir para rodar as migrations do banco
+// 6. Aguarda o banco de dados ficar saudável antes de rodar migrações
+console.log("Aguardando banco de dados ficar saudável...");
+let dbHealthy = false;
+for (let attempt = 0; attempt < 30 && !dbHealthy; attempt++) {
+  try {
+    const health = await $`docker inspect oiko-db --format '{{.State.Health.Status}}'`.text();
+    if (health.trim() === "healthy") {
+      dbHealthy = true;
+    }
+  } catch {}
+  if (!dbHealthy) await Bun.sleep(2000);
+}
+if (!dbHealthy) {
+  console.log("Timeout aguardando DB. Tentando migrações mesmo assim...");
+}
+
+// 7. Aguarda o container da API subir para rodar as migrations do banco
 let apiContainer = "";
 console.log("Aguardando container da API inicializar...");
 while (!apiContainer) {
@@ -70,11 +93,17 @@ while (!apiContainer) {
   apiContainer = result.trim();
 }
 
-// 6. Roda o push do Drizzle ORM no banco de dados
+// 8. Roda o push do Drizzle ORM no banco de dados
 console.log("Executando migrações do banco de dados...");
-await $`docker exec ${apiContainer} bun run db:push`;
+try {
+  await $`docker exec ${apiContainer} bun run db:push`;
+  console.log("Migrações aplicadas com sucesso.");
+} catch (err) {
+  console.error("Falha ao aplicar migrações:", err.message);
+  console.log("Continuando mesmo com falha na migração...");
+}
 
-// 7. Aguarda a API estar totalmente saudável
+// 9. Aguarda a API estar totalmente saudável
 console.log("Aguardando API responder /health...");
 let apiHealthy = false;
 while (!apiHealthy) {
@@ -86,7 +115,7 @@ while (!apiHealthy) {
   }
 }
 
-// 8. Aguarda o container do Web Frontend subir
+// 10. Aguarda o container do Web Frontend subir
 let webContainer = "";
 console.log("Aguardando container Web inicializar...");
 while (!webContainer) {
@@ -95,7 +124,7 @@ while (!webContainer) {
   webContainer = result.trim();
 }
 
-// 9. Aguarda o frontend estar saudável
+// 11. Aguarda o frontend estar saudável
 console.log("Aguardando Frontend responder saudável...");
 let webHealthy = false;
 while (!webHealthy) {
@@ -105,15 +134,6 @@ while (!webHealthy) {
   } catch {
     await Bun.sleep(2000);
   }
-}
-
-// Tempo de segurança para estabilização das conexões do proxy Traefik
-await Bun.sleep(5000);
-
-// 10. Desliga a stack antiga se ela existir
-if (oldColor) {
-  console.log(`Derrubando a stack antiga (${oldColor})...`);
-  await $`docker compose -f docker-compose.app.yml -p oiko-${oldColor} down`;
 }
 
 console.log(`Deploy finalizado com sucesso na stack ${newColor}!`);

@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
+        with:
+          clean: false
 
       - name: Instalar Bun no Runner
         uses: oven-sh/setup-bun@v2
