@@ -22,7 +22,8 @@ import { Spinner } from './spinner'
 
 // refactor this component's code later
 export function GoalsContent() {
-  const { selected_category, to_update, set_to_update } = useContext(FinanceContext)
+  const { selected_category, to_update, set_to_update } =
+    useContext(FinanceContext)
   const { data, isLoading, dataUpdatedAt } = useGoals(
     selected_category,
     to_update
@@ -32,7 +33,6 @@ export function GoalsContent() {
   const [is_excluding, set_is_excluding] = useState(false)
   const [target_amount, set_target_amount] = useState('')
   const [target_date, set_target_date] = useState('')
-
 
   async function saveGoal() {
     try {

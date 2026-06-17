@@ -6,7 +6,8 @@ export async function GET(request: NextRequest) {
 
   if (sessionToken) {
     try {
-      const backendUrl = process.env.INTERNAL_BACKEND_API_URL || 'http://localhost:3333'
+      const backendUrl =
+        process.env.INTERNAL_BACKEND_API_URL || 'http://localhost:3333'
       await fetch(`${backendUrl}/api/auth/sign-out`, {
         method: 'POST',
         headers: {

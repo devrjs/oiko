@@ -19,7 +19,6 @@ export function DropdownMenu({ finance, category, type }: DropdownMenuProps) {
   const { set_stage_finance, set_stage_category, set_to_update, to_update } =
     useContext(FinanceContext)
 
-
   async function deleteFinance(finance_id: string) {
     try {
       await api.post('/delete/finance', {

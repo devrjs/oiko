@@ -31,9 +31,9 @@ interface FinanceFormProps {
 export function FinanceForm({ type, setIsOpen }: FinanceFormProps) {
   const { selected_category, to_update, set_to_update, stage_finance } =
     useContext(FinanceContext)
-  const [radio_button_value, set_radio_button_value] = useState<string | undefined>(
-    stage_finance?.type
-  )
+  const [radio_button_value, set_radio_button_value] = useState<
+    string | undefined
+  >(stage_finance?.type)
   const [error_message, set_error_message] = useState('')
   const [is_loading, set_is_loading] = useState(false)
 
@@ -71,9 +71,7 @@ export function FinanceForm({ type, setIsOpen }: FinanceFormProps) {
           finance_id: stage_finance.id,
           description,
           amount,
-          date: dayjs(dateFormatToUTC(date)).format(
-            'YYYY-MM-DDT[03]:mm:ss[Z]'
-          ),
+          date: dayjs(dateFormatToUTC(date)).format('YYYY-MM-DDT[03]:mm:ss[Z]'),
           category_id: selected_category,
           type: radio_button_value,
         })
@@ -81,9 +79,7 @@ export function FinanceForm({ type, setIsOpen }: FinanceFormProps) {
         await api.post('/add/finance', {
           description,
           amount,
-          date: dayjs(dateFormatToUTC(date)).format(
-            'YYYY-MM-DDT[03]:mm:ss[Z]'
-          ),
+          date: dayjs(dateFormatToUTC(date)).format('YYYY-MM-DDT[03]:mm:ss[Z]'),
           category_id: selected_category,
           type: radio_button_value,
         })

@@ -6,7 +6,9 @@ type GetCategoryResponse = {
   categories: Category[]
 }
 
-async function get_categories(_to_update: boolean): Promise<GetCategoryResponse> {
+async function get_categories(
+  _to_update: boolean
+): Promise<GetCategoryResponse> {
   const { data } = await api.get('/all/categories')
   return { categories: data }
 }

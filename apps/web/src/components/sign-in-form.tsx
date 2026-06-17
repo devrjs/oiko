@@ -94,7 +94,7 @@ export function SignInForm() {
           <button
             type='button'
             onClick={() => setShowPassword(!showPassword)}
-            className='flex h-full items-center justify-center focus:outline-none hover:text-gray-200 transition-colors'
+            className='flex h-full items-center justify-center transition-colors hover:text-gray-200 focus:outline-none'
             tabIndex={-1}
           >
             {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}

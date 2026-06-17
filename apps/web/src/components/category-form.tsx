@@ -19,7 +19,8 @@ interface CategoryFormProps {
 }
 
 export function CategoryForm({ setIsOpen: set_is_open }: CategoryFormProps) {
-  const { to_update, set_to_update, stage_category } = useContext(FinanceContext)
+  const { to_update, set_to_update, stage_category } =
+    useContext(FinanceContext)
   const [error_message, set_error_message] = useState('')
   const [is_loading, set_is_loading] = useState(false)
 

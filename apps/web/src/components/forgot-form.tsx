@@ -7,9 +7,7 @@ export function ForgotForm() {
 
   return (
     <div className='flex h-full w-full flex-col justify-center gap-2'>
-      <p className='text-center text-gray-400'>
-        {message}
-      </p>
+      <p className='text-center text-gray-400'>{message}</p>
     </div>
   )
 }
