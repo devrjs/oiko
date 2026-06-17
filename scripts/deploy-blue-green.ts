@@ -21,6 +21,9 @@ try {
 
 // 2. Sobe a infraestrutura base (postgres, traefik)
 console.log("Subindo containers de infraestrutura...");
+try {
+  await $`docker rm -f oiko-traefik oiko-db`.quiet();
+} catch {}
 await $`docker compose -f docker-compose.infra.yml -p oiko-infra up -d`;
 
 // 3. Identifica qual stack (blue/green) está rodando atualmente

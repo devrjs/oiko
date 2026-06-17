@@ -5,6 +5,7 @@ set -e
 docker network inspect traefik >/dev/null 2>&1 || docker network create traefik
 docker network inspect oiko >/dev/null 2>&1 || docker network create oiko
 
+docker rm -f oiko-traefik oiko-db >/dev/null 2>&1 || true
 docker compose -f docker-compose.infra.yml -p oiko-infra up -d
 
 BLUE_RUNNING=$(docker ps --filter "label=com.docker.compose.project=oiko-blue" --filter "status=running" -q)
