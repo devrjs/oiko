@@ -16,9 +16,11 @@
     "db:studio": "cd apps/api && bun run --env-file=../../.env drizzle-kit studio",
     "db:seed": "cd apps/api && bun run --env-file=../../.env src/db/seed.ts",
     "deploy:infra": "docker compose -f docker-compose.infra.yml -p oiko-infra up -d",
-    "deploy": "bash scripts/deploy-blue-green.sh"
+    "deploy": "bun scripts/deploy-blue-green.ts",
+    "deploy:sh": "bash scripts/deploy-blue-green.sh"
   },
   "devDependencies": {
+    "@types/bun": "1.3.14",
     "knip": "6.14.2",
     "turbo": "2.9.17"
   },

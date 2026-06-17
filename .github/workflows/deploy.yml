@@ -37,7 +37,7 @@ jobs:
 
       - name: Executar Deploy Blue-Green
         run: |
-          bash scripts/deploy-blue-green.sh
+          bun run deploy
 
       - name: Limpar dados do build antigo
         run: |
