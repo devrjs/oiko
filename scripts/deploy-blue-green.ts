@@ -19,12 +19,25 @@ try {
   await $`docker network create oiko`;
 }
 
-// 2. Sobe a infraestrutura base (postgres, traefik)
-console.log("Subindo containers de infraestrutura...");
-try {
-  await $`docker rm -f oiko-traefik oiko-db`.quiet();
-} catch {}
-await $`docker compose -f docker-compose.infra.yml -p oiko-infra up -d`;
+// 2. Sobe a infraestrutura base (postgres, traefik) apenas se não estiver rodando
+const infraRunning = (await $`docker ps --filter "label=com.docker.compose.project=oiko-infra" --filter "status=running" -q`.text()).trim();
+if (!infraRunning) {
+  console.log("Infraestrutura inativa. Iniciando...");
+  try {
+    await $`docker rm -f oiko-traefik oiko-db`.quiet();
+  } catch {}
+  await $`docker compose -f docker-compose.infra.yml -p oiko-infra up -d`;
+} else {
+  console.log("Infraestrutura ativa e rodando.");
+}
+
+// 2b. Remove containers do projeto legado "oiko" (anterior ao blue-green)
+//     que usam as mesmas labels Traefik e causam conflito de serviço duplicado
+const legacyRunning = (await $`docker ps --filter "label=com.docker.compose.project=oiko" --filter "status=running" -q`.text()).trim();
+if (legacyRunning) {
+  console.log("Removendo containers legados do projeto 'oiko'...");
+  await $`docker compose -f docker-compose.yml -p oiko down`.quiet().nothrow();
+}
 
 // 3. Identifica qual stack (blue/green) está rodando atualmente
 const blueRunning = (await $`docker ps --filter "label=com.docker.compose.project=oiko-blue" --filter "status=running" -q`.text()).trim();
