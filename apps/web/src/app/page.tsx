@@ -15,7 +15,7 @@ export default function LandingPage() {
         <LandingFeatures />
         <LandingGoals />
         <LandingPricing />
-        {/* <LandingCta /> */}
+        <LandingCta />
       </main>
       <LandingFooter />
     </>
