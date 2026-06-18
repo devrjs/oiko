@@ -47,6 +47,10 @@ bun.lockb
 Thumbs.db
 .DS_Store
 
+# Compiled binaries
+*.exe
+*.pdb
+
 # Agentes
 .agent**
 .claude
