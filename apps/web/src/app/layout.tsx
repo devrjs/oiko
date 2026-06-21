@@ -1,25 +1,26 @@
 import type { Metadata } from 'next'
-import {
-  Bai_Jamjuree as BaiJamjuree,
-  JetBrains_Mono,
-  Roboto_Flex as Roboto,
-} from 'next/font/google'
+import { Geist, Geist_Mono } from 'next/font/google'
 import type { ReactNode } from 'react'
 import { FinanceProvider } from '@/contexts/finance-context'
 import { ReactQueryProvider } from './react-query-provider'
 import './globals.css'
-import { cn } from '@/lib/utils'
 
-const jetbrainsMono = JetBrains_Mono({
+const geist_display = Geist({
   subsets: ['latin'],
-  variable: '--font-mono',
+  weight: ['600'],
+  variable: '--display-family',
 })
 
-const roboto = Roboto({ subsets: ['latin'], variable: '--font-roboto' })
-const baiJamjuree = BaiJamjuree({
+const geist_body = Geist({
   subsets: ['latin'],
-  weight: '700',
-  variable: '--font-bai-jamjuree',
+  weight: ['400'],
+  variable: '--body-family',
+})
+
+const geist_mono = Geist_Mono({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-mono',
 })
 
 export const metadata: Metadata = {
@@ -30,11 +31,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <ReactQueryProvider>
-      <html lang='pt-BR' className={cn('font-mono', jetbrainsMono.variable)}>
+      <html
+        lang='pt-BR'
+        className={`${geist_display.variable} ${geist_body.variable} ${geist_mono.variable}`}
+      >
         <FinanceProvider>
-          <body
-            className={`${roboto.variable} ${baiJamjuree.variable} bg-gray-800 font-sans text-gray-100`}
-          >
+          <body className='bg-background font-body text-foreground'>
             {children}
           </body>
         </FinanceProvider>
