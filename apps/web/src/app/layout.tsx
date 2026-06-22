@@ -9,22 +9,10 @@ export const metadata: Metadata = {
   description: 'Controle de finanças',
 }
 
-const monospaceFonts =
-  'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
-
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <ReactQueryProvider>
-      <html
-        lang='pt-BR'
-        style={
-          {
-            '--display-family': monospaceFonts,
-            '--body-family': monospaceFonts,
-            '--font-mono': monospaceFonts,
-          } as React.CSSProperties
-        }
-      >
+      <html lang='pt-BR'>
         <FinanceProvider>
           <body className='bg-background font-body text-foreground'>
             {children}
