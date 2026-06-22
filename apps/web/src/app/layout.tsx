@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import { FinanceProvider } from '@/contexts/finance-context'
-import { ReactQueryProvider } from './react-query-provider'
+import { Providers } from './providers'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -11,14 +11,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <ReactQueryProvider>
-      <html lang='pt-BR'>
-        <FinanceProvider>
-          <body className='bg-background font-body font-mono text-foreground'>
+    <html lang='pt-BR' suppressHydrationWarning>
+      <FinanceProvider>
+        <body className='bg-background font-body font-mono text-foreground'>
+          <Providers
+            attribute='class'
+            defaultTheme='system'
+            enableSystem
+            disableTransitionOnChange
+          >
             {children}
-          </body>
-        </FinanceProvider>
-      </html>
-    </ReactQueryProvider>
+          </Providers>
+        </body>
+      </FinanceProvider>
+    </html>
   )
 }

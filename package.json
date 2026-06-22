@@ -35,5 +35,8 @@
   },
   "resolutions": {
     "kysely": "0.28.17"
+  },
+  "dependencies": {
+    "next-themes": "^0.4.6"
   }
 }
