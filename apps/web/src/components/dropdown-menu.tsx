@@ -1,8 +1,15 @@
 'use client'
 
-import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu'
 import { CheckCircle2, Pencil, PenLine, Trash } from 'lucide-react'
 import { useContext } from 'react'
+import {
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenu as ShadcnDropdownMenu,
+} from '@/components/ui/dropdown-menu'
 import { FinanceContext } from '@/contexts/finance-context'
 import type { Category } from '@/hooks/use-categories'
 import type { Finance } from '@/hooks/use-finances'
@@ -60,92 +67,83 @@ export function DropdownMenu({ finance, category, type }: DropdownMenuProps) {
   }
 
   return (
-    <div className='relative inline-block text-left'>
-      <DropdownMenuPrimitive.Root>
-        <DropdownMenuPrimitive.Trigger asChild>
-          <button
-            type='button'
-            className='ml-auto flex h-10 w-10 items-center justify-center rounded-xl bg-gray-900 text-[25px] text-cyan-500 outline-none hover:bg-cyan-500 hover:text-gray-900'
+    <ShadcnDropdownMenu>
+      <DropdownMenuTrigger>
+        <button
+          type='button'
+          className='ml-auto flex h-10 w-10 items-center justify-center rounded-xl bg-muted text-[25px] text-primary outline-none hover:bg-primary hover:text-primary-foreground'
+        >
+          <Pencil />
+        </button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuPortal>
+        <DropdownMenuContent side='left'>
+          {(finance?.type === 'Contas a pagar' ||
+            finance?.type === 'Contas a receber') && (
+            <>
+              <DropdownMenuItem onClick={() => confirmFinance(finance)}>
+                <CheckCircle2 size={18} />
+                <span className='pl-2'>Confirmar</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
+
+          {type === 'finances' && (
+            <Modal type='finances'>
+              <button
+                type='button'
+                onClick={() => set_stage_finance(finance)}
+                className='flex w-full items-center gap-2 px-2 py-2 text-xs'
+              >
+                <PenLine size={18} />
+                <span className='pl-2'>Editar</span>
+              </button>
+            </Modal>
+          )}
+
+          {type === 'pendencies' && (
+            <Modal type='pendencies'>
+              <button
+                type='button'
+                onClick={() => set_stage_finance(finance)}
+                className='flex w-full items-center gap-2 px-2 py-2 text-xs'
+              >
+                <PenLine size={18} />
+                <span className='pl-2'>Editar</span>
+              </button>
+            </Modal>
+          )}
+
+          {type === 'category' && (
+            <Modal type='category'>
+              <button
+                type='button'
+                onClick={() => set_stage_category(category)}
+                className='flex w-full items-center gap-2 px-2 py-2 text-xs'
+              >
+                <PenLine size={18} />
+                <span className='pl-2'>Editar</span>
+              </button>
+            </Modal>
+          )}
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem
+            variant='destructive'
+            onClick={() =>
+              type === 'category'
+                ? category && deleteCategory(category.id)
+                : finance && deleteFinance(finance.id)
+            }
           >
-            <Pencil />
-          </button>
-        </DropdownMenuPrimitive.Trigger>
-
-        <DropdownMenuPrimitive.Portal>
-          <DropdownMenuPrimitive.Content
-            side='left'
-            className='flex flex-col rounded-lg bg-gray-800 px-1.5 py-1 shadow-md'
-          >
-            {(finance?.type === 'Contas a pagar' ||
-              finance?.type === 'Contas a receber') && (
-              <>
-                <DropdownMenuPrimitive.Item
-                  onClick={() => confirmFinance(finance)}
-                  className='flex cursor-default select-none items-center rounded-md px-2 py-2 text-gray-300 text-md outline-none hover:bg-cyan-600 hover:text-gray-100'
-                >
-                  <CheckCircle2 size={22} />
-                  <span className='pl-4'>Confirmar</span>
-                </DropdownMenuPrimitive.Item>
-                <DropdownMenuPrimitive.Separator className='my-1 h-px bg-gray-700' />
-              </>
-            )}
-
-            {type === 'finances' && (
-              <Modal type='finances'>
-                <button
-                  type='button'
-                  onClick={() => set_stage_finance(finance)}
-                  className='flex cursor-default select-none items-center rounded-md px-2 py-2 text-gray-300 text-md outline-none hover:bg-cyan-600 hover:text-gray-100'
-                >
-                  <PenLine size={22} />
-                  <span className='pl-4'>Editar</span>
-                </button>
-              </Modal>
-            )}
-
-            {type === 'pendencies' && (
-              <Modal type='pendencies'>
-                <button
-                  type='button'
-                  onClick={() => set_stage_finance(finance)}
-                  className='flex cursor-default select-none items-center rounded-md px-2 py-2 text-gray-300 text-md outline-none hover:bg-cyan-600 hover:text-gray-100'
-                >
-                  <PenLine size={22} />
-                  <span className='pl-4'>Editar</span>
-                </button>
-              </Modal>
-            )}
-
-            {type === 'category' && (
-              <Modal type='category'>
-                <button
-                  type='button'
-                  onClick={() => set_stage_category(category)}
-                  className='flex cursor-default select-none items-center rounded-md px-2 py-2 text-gray-300 text-md outline-none hover:bg-cyan-600 hover:text-gray-100'
-                >
-                  <PenLine size={22} />
-                  <span className='pl-4'>Editar</span>
-                </button>
-              </Modal>
-            )}
-
-            <DropdownMenuPrimitive.Separator className='my-1 h-px bg-gray-700' />
-
-            <DropdownMenuPrimitive.Item
-              onClick={() =>
-                type === 'category'
-                  ? category && deleteCategory(category.id)
-                  : finance && deleteFinance(finance.id)
-              }
-              className='flex cursor-default select-none items-center rounded-md px-2 py-2 text-gray-300 text-md outline-none hover:bg-cyan-600 hover:text-gray-100'
-            >
-              <Trash size={22} />
-              <span className='pl-4'>Excluir</span>
-            </DropdownMenuPrimitive.Item>
-            <DropdownMenuPrimitive.Arrow className='fill-gray-800' />
-          </DropdownMenuPrimitive.Content>
-        </DropdownMenuPrimitive.Portal>
-      </DropdownMenuPrimitive.Root>
-    </div>
+            <Trash size={18} />
+            <span className='pl-2'>Excluir</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenuPortal>
+    </ShadcnDropdownMenu>
   )
 }

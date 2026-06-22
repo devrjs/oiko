@@ -9,7 +9,7 @@ interface TopbarProps {
 
 export function Topbar({ expandedSidebar }: TopbarProps) {
   return (
-    <nav className='flex h-16 w-full items-center justify-between rounded-2xl bg-gray-900 px-2'>
+    <nav className='flex h-16 w-full items-center justify-between rounded-2xl bg-card px-2'>
       <button
         type='button'
         className='flex h-16 w-16 cursor-pointer items-center justify-center'

@@ -2,6 +2,14 @@
 
 import dayjs from 'dayjs'
 import { useContext, useState } from 'react'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import { FinanceContext } from '@/contexts/finance-context'
 import { convertToBRL } from '@/hooks/use-convert-to-brl'
 import { useFinances } from '@/hooks/use-finances'
@@ -47,71 +55,64 @@ export function FinanceTable({ type }: FinanceTableProps) {
           </div>
         ) : error ? (
           <div className='flex h-full w-full items-center justify-center'>
-            <span>Falha ao carregar!</span>
+            <span className='text-destructive'>Falha ao carregar!</span>
           </div>
         ) : data && (!data.finances || data.finances.length <= 0) ? (
-          <div className='flex h-full w-full items-center justify-center text-2xl text-gray-500'>
-            <span className='rounded-full border border-gray-800 p-8'>
+          <div className='flex h-full w-full items-center justify-center text-2xl text-muted-foreground'>
+            <span className='rounded-full border border-border p-8'>
               Nenhum registro cadastrado!
             </span>
           </div>
         ) : (
-          <table
-            className='w-full border-separate border-spacing-y-2 text-gray-400'
-            key={dataUpdatedAt}
-          >
-            <thead className='text-left'>
-              <tr>
-                <th className='pl-3'>Descrição</th>
-                <th className='px-2'>Valor</th>
-                <th className='px-2'>Tipo</th>
-                <th className='px-2'>Data</th>
-                <th className='w-[50px]' />
-              </tr>
-            </thead>
+          <Table key={dataUpdatedAt}>
+            <TableHeader>
+              <TableRow>
+                <TableHead className='pl-3'>Descrição</TableHead>
+                <TableHead className='px-2'>Valor</TableHead>
+                <TableHead className='px-2'>Tipo</TableHead>
+                <TableHead className='px-2'>Data</TableHead>
+                <TableHead className='w-[50px]' />
+              </TableRow>
+            </TableHeader>
 
-            <tbody>
+            <TableBody>
               {data?.finances.map(finance => {
+                const typeColor =
+                  finance.type === 'Saída'
+                    ? 'text-destructive'
+                    : finance.type === 'Entrada'
+                      ? 'text-foreground'
+                      : finance.type === 'Contas a pagar'
+                        ? 'text-muted-foreground'
+                        : 'text-primary'
+
                 return (
-                  <tr
-                    key={finance.id}
-                    className='h-12 whitespace-nowrap bg-gray-700 text-gray-200'
-                  >
-                    <td className='rounded-tl-lg rounded-bl-lg pr-2 pl-3'>
+                  <TableRow key={finance.id} className='bg-muted/30'>
+                    <TableCell className='pr-2 pl-3 font-medium'>
                       {finance.description}
-                    </td>
-                    <td
-                      className={`px-2 ${finance.type === 'Saída' && 'text-red-500'}
-                    ${finance.type === 'Entrada' && 'text-green-500'}
-                    ${finance.type === 'Contas a pagar' && 'text-orange-500'}
-                  ${finance.type === 'Contas a receber' && 'text-cyan-500'}`}
-                    >
+                    </TableCell>
+                    <TableCell className={`px-2 ${typeColor}`}>
                       {convertToBRL(
                         finance.type === 'Saída' ||
                           finance.type === 'Contas a pagar'
                           ? finance.amount * -1
                           : finance.amount
                       )}
-                    </td>
-                    <td
-                      className={`px-2 ${finance.type === 'Saída' && 'text-red-500'}
-                      ${finance.type === 'Entrada' && 'text-green-500'}
-                    ${finance.type === 'Contas a pagar' && 'text-orange-500'}
-                    ${finance.type === 'Contas a receber' && 'text-cyan-500'}`}
-                    >
+                    </TableCell>
+                    <TableCell className={`px-2 ${typeColor}`}>
                       {finance.type}
-                    </td>
-                    <td className='px-2'>
+                    </TableCell>
+                    <TableCell className='px-2'>
                       {dayjs(finance.date).format('DD/MM/YYYY')}
-                    </td>
-                    <td className='rounded-tr-lg rounded-br-lg lg:max-w-[20px]'>
+                    </TableCell>
+                    <TableCell className='w-[50px]'>
                       <DropdownMenu type={type} finance={finance} />
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 )
               })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         )}
       </div>
 

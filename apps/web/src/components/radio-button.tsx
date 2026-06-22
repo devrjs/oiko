@@ -22,8 +22,8 @@ export function RadioButton({
         type='button'
         className={`flex h-full w-full items-center justify-center gap-2 rounded-md ${
           radioButtonValue === 'Saída' || radioButtonValue === 'Contas a pagar'
-            ? 'bg-red-500 text-gray-100'
-            : 'bg-gray-700 text-red-500'
+            ? 'bg-destructive text-destructive-foreground'
+            : 'bg-muted text-destructive'
         }`}
         onClick={
           type === 'finances'
@@ -45,8 +45,8 @@ export function RadioButton({
         className={`flex h-full w-full items-center justify-center gap-2 rounded-md ${
           radioButtonValue === 'Entrada' ||
           radioButtonValue === 'Contas a receber'
-            ? 'bg-green-500 text-black'
-            : 'bg-gray-700 text-green-500'
+            ? 'bg-primary text-primary-foreground'
+            : 'bg-muted text-foreground'
         }`}
         onClick={
           type === 'finances'

@@ -44,7 +44,7 @@ export function Pagination({
         <>
           <PaginationItem on_page_change={on_page_change} number={1} />
           {current_page > 2 + siblingsCount && (
-            <span className='text-cyan-500'>{'<<'}</span>
+            <span className='text-muted-foreground'>{'<<'}</span>
           )}
         </>
       )}
@@ -80,7 +80,7 @@ export function Pagination({
       {current_page + siblingsCount < lastPage && (
         <>
           {current_page + 1 + siblingsCount < lastPage && (
-            <span className='text-cyan-500'>{'>>'}</span>
+            <span className='text-muted-foreground'>{'>>'}</span>
           )}
           <PaginationItem on_page_change={on_page_change} number={lastPage} />
         </>

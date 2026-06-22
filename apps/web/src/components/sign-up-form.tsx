@@ -92,7 +92,7 @@ export function SignUpForm() {
         icon={<User size={22} />}
         {...register('username')}
       />
-      <span className='text-red-500'>{errors.username?.message}</span>
+      <span className='text-destructive'>{errors.username?.message}</span>
 
       <Input
         type='text'
@@ -101,7 +101,7 @@ export function SignUpForm() {
         icon={<User2 size={22} />}
         {...register('name')}
       />
-      <span className='text-red-500'>{errors.name?.message}</span>
+      <span className='text-destructive'>{errors.name?.message}</span>
 
       <Input
         type='password'
@@ -110,7 +110,7 @@ export function SignUpForm() {
         icon={<Lock size={22} />}
         {...register('password')}
       />
-      <span className='text-red-500'>{errors.password?.message}</span>
+      <span className='text-destructive'>{errors.password?.message}</span>
 
       <Input
         type='password'
@@ -119,14 +119,16 @@ export function SignUpForm() {
         icon={<Lock size={22} />}
         {...register('confirmPassword')}
       />
-      <span className='text-red-500'>{errors.confirmPassword?.message}</span>
+      <span className='text-destructive'>
+        {errors.confirmPassword?.message}
+      </span>
 
       <Button type='submit' disabled={isLoading} className='mt-4'>
         {isLoading ? <Spinner /> : 'Cadastrar'}
       </Button>
 
       {signUpErrorMessage && (
-        <span className='mt-2 text-center text-md text-red-500'>
+        <span className='mt-2 text-center text-destructive text-md'>
           {signUpErrorMessage}
         </span>
       )}

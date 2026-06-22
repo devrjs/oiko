@@ -30,13 +30,13 @@ export function Sidebar({ expanded }: SidebarProps) {
     <aside
       className={`${
         expanded ? 'block w-72 lg:w-16' : 'hidden w-16 lg:block lg:w-72'
-      } h-fit rounded-2xl bg-gray-900 py-2 duration-500`}
+      } h-fit rounded-2xl bg-card py-2 duration-500`}
     >
       <div className='ml-4 overflow-hidden'>
         <LogoName />
       </div>
 
-      <ul className='overflow-hidden text-gray-200'>
+      <ul className='overflow-hidden text-foreground'>
         <SidebarLink
           href='/dashboard'
           name='Dashboard'
@@ -64,7 +64,7 @@ export function Sidebar({ expanded }: SidebarProps) {
       <button
         type='button'
         onClick={handleSignOut}
-        className='flex w-full items-center overflow-hidden rounded-b-2xl hover:text-red-500'
+        className='flex w-full items-center overflow-hidden rounded-b-2xl hover:text-destructive'
       >
         <span className='flex h-14 min-w-[60px] items-center justify-center text-[32px]'>
           <LogOut />

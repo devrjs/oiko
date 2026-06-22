@@ -69,7 +69,9 @@ export function CategoryForm({ setIsOpen: set_is_open }: CategoryFormProps) {
       onSubmit={handleSubmit(onSubmit)}
       className='mt-6 flex flex-col gap-3'
     >
-      <span className='-mb-2 text-red-500'>{errors.description?.message}</span>
+      <span className='-mb-2 text-destructive'>
+        {errors.description?.message}
+      </span>
       <InputWithLabel
         defaultValue={stage_category?.description}
         label='Descrição'
@@ -80,7 +82,7 @@ export function CategoryForm({ setIsOpen: set_is_open }: CategoryFormProps) {
       <Button type='submit' className='mt-2'>
         {is_loading ? <Spinner /> : 'Confirmar'}
       </Button>
-      <span className='-mb-2 text-red-500'>{error_message}</span>
+      <span className='-mb-2 text-destructive'>{error_message}</span>
     </form>
   )
 }

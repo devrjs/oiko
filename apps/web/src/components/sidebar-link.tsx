@@ -12,14 +12,12 @@ export function SidebarLink({ name, href, icon }: SidebarLinkProps) {
   const pathName = usePathname()
 
   return (
-    <li
-      className={`${pathName === href && 'text-green-500'} hover:text-green-500`}
-    >
+    <li className={`${pathName === href && 'text-primary'} hover:text-primary`}>
       <Link
         href={href}
         className={`flex items-center ${
           pathName === href &&
-          'after:h-12 after:w-[7px] after:rounded-l-lg after:bg-yellow-500'
+          'after:h-12 after:w-[7px] after:rounded-l-lg after:bg-primary'
         }`}
       >
         <span className='flex h-14 min-w-[60px] items-center justify-center text-[32px]'>

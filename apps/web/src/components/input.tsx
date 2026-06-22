@@ -13,23 +13,23 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div
         className={`flex h-12 w-full items-center gap-2 rounded pr-2 pl-3 ${
-          bg_color ?? 'bg-gray-900'
-        } focus-within:ring-2 ${error ? 'redFocus ring-red-500' : 'cyanFocus ring-cyan-400'}`}
+          bg_color ?? 'bg-muted'
+        } focus-within:ring-2 ${error ? 'ring-destructive' : 'ring-ring'}`}
       >
         {icon && (
-          <span className='flex h-full w-full max-w-[30px] items-center justify-center text-gray-400'>
+          <span className='flex h-full w-full max-w-[30px] items-center justify-center text-muted-foreground'>
             {icon}
           </span>
         )}
 
         <input
           ref={ref}
-          className={`webkit-autofill h-12 w-full bg-transparent outline-none placeholder:text-gray-400`}
+          className='webkit-autofill h-12 w-full bg-transparent outline-none placeholder:text-muted-foreground'
           {...props}
         />
 
         {rightElement && (
-          <div className='flex h-full items-center justify-center text-gray-400'>
+          <div className='flex h-full items-center justify-center text-muted-foreground'>
             {rightElement}
           </div>
         )}

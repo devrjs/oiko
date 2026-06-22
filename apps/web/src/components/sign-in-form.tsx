@@ -83,7 +83,7 @@ export function SignInForm() {
         error={errors.username}
         {...register('username')}
       />
-      <span className='text-red-500'>{errors.username?.message}</span>
+      <span className='text-destructive'>{errors.username?.message}</span>
 
       <Input
         type={showPassword ? 'text' : 'password'}
@@ -94,7 +94,7 @@ export function SignInForm() {
           <button
             type='button'
             onClick={() => setShowPassword(!showPassword)}
-            className='flex h-full items-center justify-center transition-colors hover:text-gray-200 focus:outline-none'
+            className='flex h-full items-center justify-center transition-colors hover:text-foreground focus:outline-none'
             tabIndex={-1}
           >
             {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
@@ -102,14 +102,14 @@ export function SignInForm() {
         }
         {...register('password')}
       />
-      <span className='text-red-500'>{errors.password?.message}</span>
+      <span className='text-destructive'>{errors.password?.message}</span>
 
       <Button type='submit' disabled={isLoading} className='mt-2'>
         {isLoading ? <Spinner /> : 'Entrar na plataforma'}
       </Button>
 
       {signInErrorMessage && (
-        <span className='text-center text-md text-red-500'>
+        <span className='text-center text-destructive text-md'>
           {signInErrorMessage}
         </span>
       )}

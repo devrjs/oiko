@@ -10,8 +10,10 @@ export function UserInfo() {
 
   return (
     <div className='hidden flex-col items-end sm:flex' key={dataUpdatedAt}>
-      <span className='text-[11pt] text-gray-300'>{data?.user.name}</span>
-      <span className='text-[10pt] text-gray-400'>@{data?.user.username}</span>
+      <span className='text-[11pt] text-foreground'>{data?.user.name}</span>
+      <span className='text-[10pt] text-muted-foreground'>
+        @{data?.user.username}
+      </span>
     </div>
   )
 }

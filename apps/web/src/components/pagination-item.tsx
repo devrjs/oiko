@@ -14,7 +14,11 @@ export function PaginationItem({
 }: PaginationItemProps) {
   return (
     <button
-      className={`h-8 w-8 rounded border border-cyan-500 bg-transparent text-cyan-500 hover:bg-cyan-500 hover:text-black disabled:cursor-default disabled:bg-cyan-500 disabled:text-black`}
+      className={`h-8 w-8 rounded border bg-transparent text-sm transition-colors ${
+        isCurrent
+          ? 'cursor-default border-primary bg-primary text-primary-foreground'
+          : 'border-primary text-primary hover:bg-primary hover:text-primary-foreground'
+      }`}
       disabled={isCurrent}
       onClick={() => {
         !isCurrent && on_page_change(number)

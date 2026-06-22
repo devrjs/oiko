@@ -107,14 +107,14 @@ export function GoalsContent() {
               value={data && convertToBRL(data.goals.starting_amount)}
               icon={<PiggyBank size={45} />}
               set_starting_amount={set_starting_amount}
-              textColor='text-green-500'
+              textColor='text-foreground'
             />
             <GoalCard
               title='Valor da meta'
               value={data && convertToBRL(data.goals.target_amount)}
               icon={<Goal size={37} />}
               set_target_amount={set_target_amount}
-              textColor='text-orange-500'
+              textColor='text-foreground'
             />
             <GoalCard
               title='Data da meta'
@@ -125,7 +125,7 @@ export function GoalsContent() {
               }
               icon={<Calendar size={35} />}
               set_target_date={set_target_date}
-              textColor='text-orange-500'
+              textColor='text-foreground'
             />
           </div>
           <div className='flex flex-col gap-4 p-4 xl:flex-row'>
@@ -133,21 +133,21 @@ export function GoalsContent() {
               title='Saldo atual'
               value={data && convertToBRL(data.goals.current_amount)}
               icon={<Wallet2 size={35} />}
-              textColor='text-yellow-500'
+              textColor='text-muted-foreground'
               disabled
             />
             <GoalCard
               title='Porcentagem alcançada'
               value={data?.goals.percentage_reached}
               icon={<BadgePercent size={37} />}
-              textColor='text-yellow-500'
+              textColor='text-muted-foreground'
               disabled
             />
             <GoalCard
               title='Status'
               value={data?.goals.status_message}
               icon={<Activity size={35} />}
-              textColor='text-yellow-500'
+              textColor='text-muted-foreground'
               disabled
             />
           </div>

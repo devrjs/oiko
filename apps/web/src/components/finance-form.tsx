@@ -99,7 +99,9 @@ export function FinanceForm({ type, setIsOpen }: FinanceFormProps) {
       onSubmit={handleSubmit(onSubmit)}
       className='mt-6 flex flex-col gap-3'
     >
-      <span className='-mb-2 text-red-500'>{errors.description?.message}</span>
+      <span className='-mb-2 text-destructive'>
+        {errors.description?.message}
+      </span>
       <InputWithLabel
         defaultValue={stage_finance?.description}
         label='Descrição'
@@ -107,7 +109,7 @@ export function FinanceForm({ type, setIsOpen }: FinanceFormProps) {
         {...register('description')}
       />
 
-      <span className='-mb-2 text-red-500'>{errors.amount?.message}</span>
+      <span className='-mb-2 text-destructive'>{errors.amount?.message}</span>
       <InputWithLabel
         defaultValue={stage_finance?.amount}
         label='Valor'
@@ -115,7 +117,7 @@ export function FinanceForm({ type, setIsOpen }: FinanceFormProps) {
         {...register('amount')}
       />
 
-      <span className='-mb-2 text-red-500'>{errors.date?.message}</span>
+      <span className='-mb-2 text-destructive'>{errors.date?.message}</span>
       <InputWithLabel
         defaultValue={
           stage_finance && dayjs(stage_finance?.date).format('DD/MM/YYYY')
@@ -125,7 +127,7 @@ export function FinanceForm({ type, setIsOpen }: FinanceFormProps) {
         {...register('date')}
       />
 
-      <span className='-mb-2 text-red-500'>{errors.type?.message}</span>
+      <span className='-mb-2 text-destructive'>{errors.type?.message}</span>
       <RadioButton
         type={type}
         radioButtonValue={radio_button_value}
@@ -136,7 +138,7 @@ export function FinanceForm({ type, setIsOpen }: FinanceFormProps) {
       <Button type='submit' className='mt-2'>
         {is_loading ? <Spinner /> : 'Confirmar'}
       </Button>
-      <span className='-mb-2 text-red-500'>{error_message}</span>
+      <span className='-mb-2 text-destructive'>{error_message}</span>
     </form>
   )
 }
