@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <ReactQueryProvider>
       <html lang='pt-BR'>
         <FinanceProvider>
-          <body className='bg-background font-body text-foreground'>
+          <body className='bg-background font-body font-mono text-foreground'>
             {children}
           </body>
         </FinanceProvider>
