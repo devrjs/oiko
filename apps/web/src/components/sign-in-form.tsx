@@ -9,7 +9,6 @@ import { z } from 'zod'
 import { authClient } from '@/lib/auth-client'
 import { Button } from './button'
 import { Input } from './input'
-import { LogoName } from './logo-name'
 import { Spinner } from './spinner'
 
 type SignInFormData = {
@@ -70,12 +69,8 @@ export function SignInForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className='flex h-screen w-full max-w-xs flex-col justify-center gap-3 pt-2 pb-8 sm:h-auto'
+      className='flex w-full flex-col gap-3'
     >
-      <div className='flex w-full items-center justify-center'>
-        <LogoName />
-      </div>
-
       <Input
         type='text'
         placeholder='Usuário'
@@ -104,7 +99,7 @@ export function SignInForm() {
       />
       <span className='text-destructive'>{errors.password?.message}</span>
 
-      <Button type='submit' disabled={isLoading} className='mt-2'>
+      <Button type='submit' disabled={isLoading}>
         {isLoading ? <Spinner /> : 'Entrar na plataforma'}
       </Button>
 

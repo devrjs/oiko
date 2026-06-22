@@ -106,35 +106,42 @@ export default function AnimationPage() {
   const dotKeys = Array.from({ length: 45 }, (_, idx) => `dot-${idx}`)
 
   useEffect(() => {
-    const embedScript = document.createElement('script')
-    embedScript.type = 'text/javascript'
-    embedScript.textContent = `
-      !function(){
-        if(!window.UnicornStudio){
-          window.UnicornStudio={isInitialized:!1};
-          var i=document.createElement("script");
-          i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.33/dist/unicornStudio.umd.js";
-          i.onload=function(){
-            window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)
-          };
-          (document.head || document.body).appendChild(i)
+    const initUnicorn = () => {
+      const unicorn = (window as any).UnicornStudio
+      if (unicorn && typeof unicorn.init === 'function') {
+        try {
+          unicorn.init()
+        } catch (e) {
+          console.error('Error initializing UnicornStudio:', e)
         }
-      }();
-    `
-    document.head.appendChild(embedScript)
+      }
+    }
+
+    let scriptElement: HTMLScriptElement | null = null
+    if (!(window as any).UnicornStudio) {
+      scriptElement = document.createElement('script')
+      scriptElement.src = '/unicorn/unicornStudio.umd.js'
+      scriptElement.async = true
+      scriptElement.onload = () => {
+        initUnicorn()
+      }
+      document.head.appendChild(scriptElement)
+    } else {
+      initUnicorn()
+    }
 
     const style = document.createElement('style')
     style.textContent = `
-      [data-us-project] {
+      [data-us-project], [data-us-project-src] {
         position: relative !important;
         overflow: hidden !important;
       }
       
-      [data-us-project] canvas {
+      [data-us-project] canvas, [data-us-project-src] canvas {
         clip-path: inset(0 0 10% 0) !important;
       }
       
-      [data-us-project] * {
+      [data-us-project] *, [data-us-project-src] * {
         pointer-events: none !important;
       }
       [data-us-project] a[href*="unicorn"],
@@ -143,7 +150,14 @@ export default function AnimationPage() {
       [data-us-project] .unicorn-brand,
       [data-us-project] [class*="brand"],
       [data-us-project] [class*="credit"],
-      [data-us-project] [class*="watermark"] {
+      [data-us-project] [class*="watermark"],
+      [data-us-project-src] a[href*="unicorn"],
+      [data-us-project-src] button[title*="unicorn"],
+      [data-us-project-src] div[title*="Made with"],
+      [data-us-project-src] .unicorn-brand,
+      [data-us-project-src] [class*="brand"],
+      [data-us-project-src] [class*="credit"],
+      [data-us-project-src] [class*="watermark"] {
         display: none !important;
         visibility: hidden !important;
         opacity: 0 !important;
@@ -157,6 +171,7 @@ export default function AnimationPage() {
     const hideBranding = () => {
       const selectors = [
         '[data-us-project]',
+        '[data-us-project-src]',
         '[data-us-project="OMzqyUv6M3kSnv0JeAtC"]',
         '.unicorn-studio-container',
         'canvas[aria-label*="Unicorn"]',
@@ -206,8 +221,20 @@ export default function AnimationPage() {
 
     return () => {
       clearInterval(interval)
-      document.head.removeChild(embedScript)
-      document.head.removeChild(style)
+      if (scriptElement && document.head.contains(scriptElement)) {
+        document.head.removeChild(scriptElement)
+      }
+      if (document.head.contains(style)) {
+        document.head.removeChild(style)
+      }
+      const unicorn = (window as any).UnicornStudio
+      if (unicorn && typeof unicorn.destroy === 'function') {
+        try {
+          unicorn.destroy()
+        } catch (e) {
+          console.error('Error destroying UnicornStudio:', e)
+        }
+      }
     }
   }, [])
 
@@ -228,7 +255,7 @@ export default function AnimationPage() {
       {/* Fixed Background Animation for Desktop */}
       <div className='pointer-events-none fixed inset-0 z-0 hidden h-full w-full lg:block'>
         <div
-          data-us-project='OMzqyUv6M3kSnv0JeAtC'
+          data-us-project-src='/unicorn/project.json'
           style={{ width: '100%', height: '100%' }}
         />
         <div className='pointer-events-none absolute inset-0 bg-background/85' />
