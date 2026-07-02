@@ -4,11 +4,11 @@ import { SignInForm } from '@/components/sign-in-form'
 
 export default function SignIn() {
   return (
-    <div className='flex w-104 flex-col gap-6 rounded-xl border border-border/50 bg-card/80 px-8 pt-8 pb-8 shadow-2xl shadow-foreground/5 backdrop-blur-xl'>
+    <div className='flex w-104 flex-col gap-6 rounded-2xl border border-border/60 bg-card/80 px-8 pt-8 pb-8 shadow-2xl shadow-foreground/5 ring-1 ring-foreground/5 backdrop-blur-xl'>
       {/* Branding */}
       <div className='flex flex-col items-center gap-1'>
         <Link href='/' className='group flex items-center gap-3'>
-          <div className='grid h-9 w-9 place-items-center border border-foreground/60 bg-foreground/5 font-bold font-mono text-sm tracking-widest transition-colors group-hover:bg-foreground group-hover:text-background'>
+          <div className='grid h-10 w-10 place-items-center rounded-lg border border-foreground/60 bg-foreground/5 font-bold font-mono text-sm tracking-widest transition-colors group-hover:bg-foreground group-hover:text-background'>
             O
           </div>
           <span className='font-bold font-mono text-foreground text-xl tracking-widest'>
@@ -33,7 +33,7 @@ export default function SignIn() {
       <SignInForm />
 
       {/* Signup link */}
-      <div className='flex items-center justify-center gap-1.5'>
+      <div className='flex items-center justify-center gap-1.5 border-border/60 border-t pt-5'>
         <span className='font-mono text-muted-foreground text-xs'>
           Não tem conta?
         </span>

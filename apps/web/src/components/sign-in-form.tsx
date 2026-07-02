@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Eye, EyeOff, Lock, User } from 'lucide-react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
@@ -69,42 +70,65 @@ export function SignInForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className='flex w-full flex-col gap-3'
+      className='flex w-full flex-col gap-4'
     >
-      <Input
-        type='text'
-        placeholder='Usuário'
-        icon={<User size={22} />}
-        error={errors.username}
-        {...register('username')}
-      />
-      <span className='text-destructive'>{errors.username?.message}</span>
+      {/* Usuário */}
+      <div className='flex flex-col gap-1.5'>
+        <Input
+          type='text'
+          placeholder='Usuário'
+          icon={<User size={16} />}
+          error={errors.username}
+          aria-label='Usuário'
+          {...register('username')}
+        />
+        <span className='min-h-4 text-destructive text-xs'>
+          {errors.username?.message}
+        </span>
+      </div>
 
-      <Input
-        type={showPassword ? 'text' : 'password'}
-        placeholder='Senha'
-        error={errors.password}
-        icon={<Lock size={22} />}
-        rightElement={
-          <button
-            type='button'
-            onClick={() => setShowPassword(!showPassword)}
-            className='flex h-full items-center justify-center transition-colors hover:text-foreground focus:outline-none'
-            tabIndex={-1}
-          >
-            {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
-          </button>
-        }
-        {...register('password')}
-      />
-      <span className='text-destructive'>{errors.password?.message}</span>
+      {/* Senha */}
+      <div className='flex flex-col gap-1.5'>
+        <Input
+          type={showPassword ? 'text' : 'password'}
+          placeholder='Senha'
+          error={errors.password}
+          icon={<Lock size={16} />}
+          aria-label='Senha'
+          rightElement={
+            <button
+              type='button'
+              onClick={() => setShowPassword(!showPassword)}
+              className='flex h-full items-center justify-center px-1 focus:outline-none'
+              tabIndex={-1}
+              aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+            >
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          }
+          {...register('password')}
+        />
+        <span className='min-h-4 text-destructive text-xs'>
+          {errors.password?.message}
+        </span>
+      </div>
+
+      {/* Recuperação de senha */}
+      <div className='flex justify-end'>
+        <Link
+          href='/forgot'
+          className='font-mono text-muted-foreground text-xs transition-colors hover:text-foreground'
+        >
+          Esqueceu a senha?
+        </Link>
+      </div>
 
       <Button type='submit' disabled={isLoading}>
         {isLoading ? <Spinner /> : 'Entrar na plataforma'}
       </Button>
 
       {signInErrorMessage && (
-        <span className='text-center text-destructive text-md'>
+        <span className='rounded-md bg-destructive/10 px-3 py-2 text-center text-destructive text-xs'>
           {signInErrorMessage}
         </span>
       )}
