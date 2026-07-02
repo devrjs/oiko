@@ -295,8 +295,8 @@ const UNICORN_PROJECT = {
   ],
   options: {
     name: 'Untitled project',
-    fps: 60,
-    dpi: 1.5,
+    fps: 30,
+    dpi: 1,
     scale: 1,
     includeLogo: false,
     isProduction: true,
@@ -401,7 +401,7 @@ export default function AnimationPage() {
       </div>
 
       {/* Header / Navigation */}
-      <header className='sticky top-0 right-0 left-0 z-50 border-border border-b bg-background/90 backdrop-blur-md'>
+      <header className='sticky top-0 right-0 left-0 z-50 border-border border-b bg-background/90 lg:backdrop-blur-md'>
         <div className='container mx-auto flex items-center justify-between px-6 py-4'>
           <div className='flex items-center gap-4'>
             <Link
@@ -474,7 +474,7 @@ export default function AnimationPage() {
 
         {/* Mobile Navigation Dropdown */}
         {isMenuOpen && (
-          <nav className='flex flex-col gap-4 border-border border-t bg-background/95 px-6 py-6 font-mono text-[12px] tracking-wider backdrop-blur-lg md:hidden'>
+          <nav className='flex flex-col gap-4 border-border border-t bg-background/95 px-6 py-6 font-mono text-[12px] tracking-wider md:hidden'>
             <button
               type='button'
               onClick={e => handleScroll(e, 'recursos')}
@@ -527,13 +527,13 @@ export default function AnimationPage() {
       </header>
 
       {/* Frame Accents (Decorativos nos cantos da tela) */}
-      <div className='pointer-events-none fixed top-16 left-0 z-40 h-8 w-8 border-foreground/40 border-t-2 border-l-2' />
-      <div className='pointer-events-none fixed top-16 right-0 z-40 h-8 w-8 border-foreground/40 border-t-2 border-r-2' />
-      <div className='pointer-events-none fixed bottom-0 left-0 z-40 h-8 w-8 border-foreground/40 border-b-2 border-l-2' />
-      <div className='pointer-events-none fixed right-0 bottom-0 z-40 h-8 w-8 border-foreground/40 border-b-2 border-r-2' />
+      <div className='pointer-events-none fixed top-16 left-0 z-40 hidden h-8 w-8 border-foreground/40 border-t-2 border-l-2 lg:block' />
+      <div className='pointer-events-none fixed top-16 right-0 z-40 hidden h-8 w-8 border-foreground/40 border-t-2 border-r-2 lg:block' />
+      <div className='pointer-events-none fixed bottom-0 left-0 z-40 hidden h-8 w-8 border-foreground/40 border-b-2 border-l-2 lg:block' />
+      <div className='pointer-events-none fixed right-0 bottom-0 z-40 hidden h-8 w-8 border-foreground/40 border-b-2 border-r-2 lg:block' />
 
       {/* 1. Hero Section */}
-      <section className='relative z-10 flex min-h-[90vh] items-center pt-24 lg:pt-0'>
+      <section className='relative z-10 flex min-h-[90vh] items-center pt-24 will-change-transform lg:pt-0'>
         <div className='container mx-auto flex justify-end px-6 lg:px-12'>
           <div className='w-full max-w-xl lg:w-1/2'>
             <div className='mb-4 flex items-center gap-2'>
@@ -550,14 +550,7 @@ export default function AnimationPage() {
               </h1>
             </div>
 
-            <div className='mb-5 hidden gap-1 opacity-40 lg:flex'>
-              {dotKeys.map(key => (
-                <div
-                  key={key}
-                  className='h-0.5 w-0.5 rounded-full bg-foreground'
-                />
-              ))}
-            </div>
+            <div className='mb-5 hidden h-0.5 w-40 bg-foreground/40 lg:block' />
 
             <p className='mb-6 font-mono text-foreground/90 text-sm leading-relaxed lg:text-base'>
               Como Sísifo, avançamos com persistência. Cada transação, cada
@@ -601,7 +594,8 @@ export default function AnimationPage() {
       {/* 2. Recursos (Features) Section */}
       <section
         id='recursos'
-        className='relative z-10 border-border border-t bg-background/90 px-6 py-32 backdrop-blur-md'
+        className='relative z-10 border-border border-t bg-background px-6 py-32'
+        style={{ contentVisibility: 'auto', containIntrinsicSize: '0 800px' }}
       >
         <div className='container mx-auto max-w-5xl'>
           <div className='mb-3 flex items-center gap-2'>
@@ -688,7 +682,8 @@ export default function AnimationPage() {
       {/* 3. Metas (Goals) Section */}
       <section
         id='metas'
-        className='relative z-10 border-border border-t bg-background/90 px-6 py-32 backdrop-blur-md'
+        className='relative z-10 border-border border-t bg-background px-6 py-32'
+        style={{ contentVisibility: 'auto', containIntrinsicSize: '0 800px' }}
       >
         <div className='container mx-auto max-w-5xl'>
           <div className='mb-3 flex items-center gap-2'>
@@ -743,7 +738,8 @@ export default function AnimationPage() {
       {/* 4. Planos (Pricing) Section */}
       <section
         id='planos'
-        className='relative z-10 border-border border-t bg-background/90 px-6 py-32 backdrop-blur-md'
+        className='relative z-10 border-border border-t bg-background px-6 py-32'
+        style={{ contentVisibility: 'auto', containIntrinsicSize: '0 600px' }}
       >
         <div className='container mx-auto max-w-5xl text-center'>
           <div className='mb-3 flex items-center gap-2'>
@@ -802,7 +798,7 @@ export default function AnimationPage() {
       </section>
 
       {/* 5. CTA Section */}
-      <section className='relative z-10 border-border border-t bg-background/90 px-6 py-32 backdrop-blur-md'>
+      <section className='relative z-10 border-border border-t bg-background px-6 py-32'>
         <div className='container mx-auto max-w-5xl text-center'>
           <div className='mb-3 flex items-center gap-2'>
             <div className='h-px flex-1 bg-foreground/35' />
