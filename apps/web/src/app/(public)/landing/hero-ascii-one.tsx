@@ -317,7 +317,7 @@ export default function AnimationPage() {
     setMounted(true)
   }, [])
 
-  const dotKeys = Array.from({ length: 45 }, (_, idx) => `dot-${idx}`)
+  const _dotKeys = Array.from({ length: 45 }, (_, idx) => `dot-${idx}`)
 
   useEffect(() => {
     const container = containerRef.current
@@ -325,14 +325,16 @@ export default function AnimationPage() {
 
     const origin = window.location.origin
     const projectData = JSON.parse(JSON.stringify(UNICORN_PROJECT))
-    projectData.history.forEach((layer: { texture?: { src?: string }; src?: string }) => {
-      if (layer.texture?.src?.startsWith('/unicorn/')) {
-        layer.texture.src = origin + layer.texture.src
+    projectData.history.forEach(
+      (layer: { texture?: { src?: string }; src?: string }) => {
+        if (layer.texture?.src?.startsWith('/unicorn/')) {
+          layer.texture.src = origin + layer.texture.src
+        }
+        if (layer.src?.startsWith('/unicorn/')) {
+          layer.src = origin + layer.src
+        }
       }
-      if (layer.src?.startsWith('/unicorn/')) {
-        layer.src = origin + layer.src
-      }
-    })
+    )
     const blob = new Blob([JSON.stringify(projectData)], {
       type: 'application/json',
     })
@@ -530,7 +532,7 @@ export default function AnimationPage() {
       <div className='pointer-events-none fixed top-16 left-0 z-40 hidden h-8 w-8 border-foreground/40 border-t-2 border-l-2 lg:block' />
       <div className='pointer-events-none fixed top-16 right-0 z-40 hidden h-8 w-8 border-foreground/40 border-t-2 border-r-2 lg:block' />
       <div className='pointer-events-none fixed bottom-0 left-0 z-40 hidden h-8 w-8 border-foreground/40 border-b-2 border-l-2 lg:block' />
-      <div className='pointer-events-none fixed right-0 bottom-0 z-40 hidden h-8 w-8 border-foreground/40 border-b-2 border-r-2 lg:block' />
+      <div className='pointer-events-none fixed right-0 bottom-0 z-40 hidden h-8 w-8 border-foreground/40 border-r-2 border-b-2 lg:block' />
 
       {/* 1. Hero Section */}
       <section className='relative z-10 flex min-h-[90vh] items-center pt-24 will-change-transform lg:pt-0'>
