@@ -3,7 +3,6 @@ pnpm-lock.yaml
 node_modules/
 /apps/web/node_modules/
 /apps/api/node_modules/
-graphify-out/
 
 # Next.js
 .next/
@@ -56,3 +55,4 @@ Thumbs.db
 .claude
 .opencode
 .hermes
+.mimocode

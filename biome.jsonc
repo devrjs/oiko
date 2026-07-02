@@ -19,7 +19,8 @@
       "!**/src/gen",
       "!.next",
       "!dist",
-      "!build"
+      "!build",
+      "!apps/web/public/unicorn"
     ]
   },
   "formatter": {
