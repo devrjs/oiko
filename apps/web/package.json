@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "bun --env-file=../../.env --bun next dev --webpack",
+    "dev": "bun --env-file=../../.env --bun next dev --turbopack",
     "build": "bun --env-file=../../.env --bun next build",
     "start": "bun --env-file=../../.env --bun next start",
     "codegen": "bunx kubb generate",
