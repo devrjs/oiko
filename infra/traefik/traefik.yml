@@ -1,0 +1,56 @@
+# =============================================================================
+# Configuração Estática do Traefik — Oiko
+# =============================================================================
+# Uso: docker compose up -d traefik
+# Requer as labels de roteamento nos serviços api e web (docker-compose.yml)
+# =============================================================================
+
+# --- Dashboard ---
+api:
+  dashboard: true
+
+# --- Entrypoints ---
+entryPoints:
+  web:
+    address: ":80"
+    # Para produção: descomente o bloco abaixo para redirecionar HTTP -> HTTPS
+    # http:
+    #   redirections:
+    #     entryPoint:
+    #       to: websecure
+    #       scheme: https
+
+  websecure:
+    address: ":443"
+
+  # Dashboard acessível pela porta 8080 (zona de confiança)
+  traefik:
+    address: ":8080"
+
+# --- Providers ---
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    network: traefik
+    watch: true
+
+  # Arquivos dinâmicos para middlewares globais
+  file:
+    directory: /etc/traefik/dynamic
+    watch: true
+
+# --- Let's Encrypt (produção) ---
+# Descomente e configure TRAEFIK_LETSENCRYPT_EMAIL e TRAEFIK_STAGING no .env
+# para habilitar certificados SSL automáticos.
+#
+# certificatesResolvers:
+#   letsencrypt:
+#     acme:
+#       email: ${TRAEFIK_LETSENCRYPT_EMAIL}
+#       storage: /letsencrypt/acme.json
+#       # Staging => certificados de teste (sem rate limit)
+#       # Produção => comente a linha abaixo
+#       caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+#       httpChallenge:
+#         entryPoint: web

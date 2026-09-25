@@ -1,0 +1,61 @@
+# =============================================================================
+# Middlewares Globais — Traefik Oiko
+# =============================================================================
+# Carregado automaticamente pelo provider file do Traefik.
+# =============================================================================
+
+http:
+  middlewares:
+
+    # --- Rate limiting básico ---
+    rate-limit:
+      rateLimit:
+        average: 100
+        burst: 200
+        period: 1m
+        sourceCriterion:
+          ipStrategy:
+            depth: 1
+
+    # --- Headers de segurança ---
+    security-headers:
+      headers:
+        frameDeny: true
+        sslRedirect: false
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 31536000
+        customFrameOptionsValue: "SAMEORIGIN"
+        referrerPolicy: "strict-origin-when-cross-origin"
+        permissionsPolicy: "camera=(), microphone=(), geolocation=()"
+        customResponseHeaders:
+          X-Robots-Tag: "noindex, nofollow"
+
+    # --- CORS (reforço para requests que passam pelo Traefik) ---
+    cors-headers:
+      headers:
+        accessControlAllowOriginList:
+          - "https://app.oiko.local"
+          - "http://app.oiko.local"
+          - "http://localhost:3000"
+        accessControlAllowMethods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - PATCH
+          - OPTIONS
+        accessControlAllowHeaders:
+          - Content-Type
+          - Authorization
+        accessControlAllowCredentials: true
+        accessControlMaxAge: 86400
+
+    # --- Compressão ---
+    compress:
+      compress:
+        excludedContentTypes:
+          - text/event-stream
